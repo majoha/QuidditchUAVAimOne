@@ -1,0 +1,22 @@
+﻿//TODO:
+Aim 1;
+* implement tracking first
+	- then implement PID controller to control tracking
+
+notes on aim 1;
+* implement basic forward tracking (on the x plane)...
+* the ability to yaw track might be possible by measuring the x position from the centre of the screen then use pythagoras to measure the angle theta and thus the radians to yaw
+
+
+Aim 2;
+(if time remains)
+
+notes on aim 2;
+
+
+General;
+
+TODO;
+* include more AR stuff on the GUI, such as the flight details
+	- give the ability to set important values such as max x, y and z velocity
+* Draw the necessary lines on the screen for co-ordination help
