@@ -65,6 +65,10 @@
             this.originalFeed = new Emgu.CV.UI.ImageBox();
             this.currentUAVAltitudeTextbox = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.currentObjectAltitudeTextbox = new System.Windows.Forms.TextBox();
+            this.zObjectVelocityTextBox = new System.Windows.Forms.TextBox();
+            this.yObjectVelocityTextBox = new System.Windows.Forms.TextBox();
+            this.xObjectVelocityTextBox = new System.Windows.Forms.TextBox();
             this.distanceToObjectTextBox = new System.Windows.Forms.TextBox();
             this.posYTextBox = new System.Windows.Forms.TextBox();
             this.posXTextBox = new System.Windows.Forms.TextBox();
@@ -79,10 +83,10 @@
             this.zUAVVelocityTextBox = new System.Windows.Forms.TextBox();
             this.yUAVVelocityTextBox = new System.Windows.Forms.TextBox();
             this.xUAVVelocityTextBox = new System.Windows.Forms.TextBox();
-            this.xObjectVelocityTextBox = new System.Windows.Forms.TextBox();
-            this.yObjectVelocityTextBox = new System.Windows.Forms.TextBox();
-            this.zObjectVelocityTextBox = new System.Windows.Forms.TextBox();
-            this.currentObjectAltitudeTextbox = new System.Windows.Forms.TextBox();
+            this.toFollowTrackBar = new System.Windows.Forms.TrackBar();
+            this.isfollowingLabel = new System.Windows.Forms.Label();
+            this.isPredictingLabel = new System.Windows.Forms.Label();
+            this.toPredictTrackBar = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.thresholdImageDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.HueLowNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SaturationLowNumericUpDown)).BeginInit();
@@ -101,6 +105,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.erodeNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.toTrackTrackBar)).BeginInit();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.toFollowTrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.toPredictTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -486,6 +492,42 @@
             this.panel2.Size = new System.Drawing.Size(117, 220);
             this.panel2.TabIndex = 60;
             // 
+            // currentObjectAltitudeTextbox
+            // 
+            this.currentObjectAltitudeTextbox.Location = new System.Drawing.Point(6, 85);
+            this.currentObjectAltitudeTextbox.Name = "currentObjectAltitudeTextbox";
+            this.currentObjectAltitudeTextbox.Size = new System.Drawing.Size(81, 20);
+            this.currentObjectAltitudeTextbox.TabIndex = 70;
+            this.currentObjectAltitudeTextbox.Text = "altitude";
+            this.currentObjectAltitudeTextbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // zObjectVelocityTextBox
+            // 
+            this.zObjectVelocityTextBox.Location = new System.Drawing.Point(6, 163);
+            this.zObjectVelocityTextBox.Name = "zObjectVelocityTextBox";
+            this.zObjectVelocityTextBox.Size = new System.Drawing.Size(82, 20);
+            this.zObjectVelocityTextBox.TabIndex = 70;
+            this.zObjectVelocityTextBox.Text = "z velocity";
+            this.zObjectVelocityTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // yObjectVelocityTextBox
+            // 
+            this.yObjectVelocityTextBox.Location = new System.Drawing.Point(6, 137);
+            this.yObjectVelocityTextBox.Name = "yObjectVelocityTextBox";
+            this.yObjectVelocityTextBox.Size = new System.Drawing.Size(82, 20);
+            this.yObjectVelocityTextBox.TabIndex = 74;
+            this.yObjectVelocityTextBox.Text = "y velocity";
+            this.yObjectVelocityTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // xObjectVelocityTextBox
+            // 
+            this.xObjectVelocityTextBox.Location = new System.Drawing.Point(6, 111);
+            this.xObjectVelocityTextBox.Name = "xObjectVelocityTextBox";
+            this.xObjectVelocityTextBox.Size = new System.Drawing.Size(82, 20);
+            this.xObjectVelocityTextBox.TabIndex = 73;
+            this.xObjectVelocityTextBox.Text = "x velocity";
+            this.xObjectVelocityTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // distanceToObjectTextBox
             // 
             this.distanceToObjectTextBox.Location = new System.Drawing.Point(6, 59);
@@ -555,7 +597,7 @@
             // toTrackTrackBar
             // 
             this.toTrackTrackBar.LargeChange = 1;
-            this.toTrackTrackBar.Location = new System.Drawing.Point(23, 371);
+            this.toTrackTrackBar.Location = new System.Drawing.Point(45, 371);
             this.toTrackTrackBar.Maximum = 1;
             this.toTrackTrackBar.Name = "toTrackTrackBar";
             this.toTrackTrackBar.Size = new System.Drawing.Size(61, 45);
@@ -565,7 +607,7 @@
             // isTrackingLabel
             // 
             this.isTrackingLabel.AutoSize = true;
-            this.isTrackingLabel.Location = new System.Drawing.Point(20, 355);
+            this.isTrackingLabel.Location = new System.Drawing.Point(42, 355);
             this.isTrackingLabel.Name = "isTrackingLabel";
             this.isTrackingLabel.Size = new System.Drawing.Size(69, 13);
             this.isTrackingLabel.TabIndex = 66;
@@ -632,41 +674,39 @@
             this.xUAVVelocityTextBox.Text = "x velocity";
             this.xUAVVelocityTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // xObjectVelocityTextBox
+            // toFollowTrackBar
             // 
-            this.xObjectVelocityTextBox.Location = new System.Drawing.Point(6, 111);
-            this.xObjectVelocityTextBox.Name = "xObjectVelocityTextBox";
-            this.xObjectVelocityTextBox.Size = new System.Drawing.Size(82, 20);
-            this.xObjectVelocityTextBox.TabIndex = 73;
-            this.xObjectVelocityTextBox.Text = "x velocity";
-            this.xObjectVelocityTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.toFollowTrackBar.Location = new System.Drawing.Point(119, 371);
+            this.toFollowTrackBar.Maximum = 1;
+            this.toFollowTrackBar.Name = "toFollowTrackBar";
+            this.toFollowTrackBar.Size = new System.Drawing.Size(61, 45);
+            this.toFollowTrackBar.TabIndex = 70;
             // 
-            // yObjectVelocityTextBox
+            // isfollowingLabel
             // 
-            this.yObjectVelocityTextBox.Location = new System.Drawing.Point(6, 137);
-            this.yObjectVelocityTextBox.Name = "yObjectVelocityTextBox";
-            this.yObjectVelocityTextBox.Size = new System.Drawing.Size(82, 20);
-            this.yObjectVelocityTextBox.TabIndex = 74;
-            this.yObjectVelocityTextBox.Text = "y velocity";
-            this.yObjectVelocityTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.isfollowingLabel.AutoSize = true;
+            this.isfollowingLabel.Location = new System.Drawing.Point(117, 355);
+            this.isfollowingLabel.Name = "isfollowingLabel";
+            this.isfollowingLabel.Size = new System.Drawing.Size(71, 13);
+            this.isfollowingLabel.TabIndex = 71;
+            this.isfollowingLabel.Text = "Follow Object";
             // 
-            // zObjectVelocityTextBox
+            // isPredictingLabel
             // 
-            this.zObjectVelocityTextBox.Location = new System.Drawing.Point(6, 163);
-            this.zObjectVelocityTextBox.Name = "zObjectVelocityTextBox";
-            this.zObjectVelocityTextBox.Size = new System.Drawing.Size(82, 20);
-            this.zObjectVelocityTextBox.TabIndex = 70;
-            this.zObjectVelocityTextBox.Text = "z velocity";
-            this.zObjectVelocityTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.isPredictingLabel.AutoSize = true;
+            this.isPredictingLabel.Location = new System.Drawing.Point(191, 355);
+            this.isPredictingLabel.Name = "isPredictingLabel";
+            this.isPredictingLabel.Size = new System.Drawing.Size(74, 13);
+            this.isPredictingLabel.TabIndex = 72;
+            this.isPredictingLabel.Text = "Predict Object";
             // 
-            // currentObjectAltitudeTextbox
+            // toPredictTrackBar
             // 
-            this.currentObjectAltitudeTextbox.Location = new System.Drawing.Point(6, 85);
-            this.currentObjectAltitudeTextbox.Name = "currentObjectAltitudeTextbox";
-            this.currentObjectAltitudeTextbox.Size = new System.Drawing.Size(81, 20);
-            this.currentObjectAltitudeTextbox.TabIndex = 70;
-            this.currentObjectAltitudeTextbox.Text = "altitude";
-            this.currentObjectAltitudeTextbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.toPredictTrackBar.Location = new System.Drawing.Point(194, 371);
+            this.toPredictTrackBar.Maximum = 1;
+            this.toPredictTrackBar.Name = "toPredictTrackBar";
+            this.toPredictTrackBar.Size = new System.Drawing.Size(60, 45);
+            this.toPredictTrackBar.TabIndex = 73;
             // 
             // Form1
             // 
@@ -674,6 +714,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1096, 666);
+            this.Controls.Add(this.toPredictTrackBar);
+            this.Controls.Add(this.isPredictingLabel);
+            this.Controls.Add(this.isfollowingLabel);
+            this.Controls.Add(this.toFollowTrackBar);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.flightCharacteristicsLabel);
             this.Controls.Add(this.panel1);
@@ -738,6 +782,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.toTrackTrackBar)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.toFollowTrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.toPredictTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -798,6 +844,10 @@
         private System.Windows.Forms.TextBox zObjectVelocityTextBox;
         private System.Windows.Forms.TextBox yObjectVelocityTextBox;
         private System.Windows.Forms.TextBox currentObjectAltitudeTextbox;
+        private System.Windows.Forms.TrackBar toFollowTrackBar;
+        private System.Windows.Forms.Label isfollowingLabel;
+        private System.Windows.Forms.Label isPredictingLabel;
+        private System.Windows.Forms.TrackBar toPredictTrackBar;
     }
 }
 

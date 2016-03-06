@@ -28,7 +28,7 @@ namespace Tutorial_31___AR_Drone
 
 
         //Snitch Variables//
-        //store an array of the last points and draw a line
+        //store an array of the last points and draw a line?//
         private int objectPosX;
         private int objectPosY;
         private int objectLastX;
@@ -37,11 +37,13 @@ namespace Tutorial_31___AR_Drone
         private float distanceToObject = 0;
         private int widthOfObject = 52;
         private int focalOfLens = 203;//210//234
-        ////////////////////
+        //Snitch Variables//
 
         //to check
         Size mySize = new Size();
         bool toTrackObject = false;
+        bool toFollowObject = false;
+        bool toPredictObject = false;
 
         //for debug//
         //Capture capture;
@@ -65,7 +67,7 @@ namespace Tutorial_31___AR_Drone
 
             this.FormClosing += Form1_FormClosing;
 
-            //this removes the right click ability from Emgu.CV.UI.ImageBox//
+            //this removes the right click ability from the Emgu.CV.UI.ImageBox//
 #if DEBUG
             thresholdImageDisplay.FunctionalMode = Emgu.CV.UI.ImageBox.FunctionalModeOption.Minimum;
             originalFeed.FunctionalMode = Emgu.CV.UI.ImageBox.FunctionalModeOption.Minimum;
@@ -83,12 +85,14 @@ namespace Tutorial_31___AR_Drone
 
         }
 
-        //called every 5 seconds//
+        //this function is called every 5 seconds//
+        //and updates non-urgent items//
         void m_timer_TickNonUrgent(object sender, EventArgs e)
         {
             this.batteryLevelBar.Value = ezB_Connect1.EZB.ARDrone.CurrentNavigationData.BatteryLevel;
         }
-        //called every 1/2 a second//
+        //this function is called every 1/2 a second//
+        //and updates semi urgent items//
         void m_timer_TickSemiUrgent(object sender, EventArgs e)
         {
 
@@ -111,18 +115,41 @@ namespace Tutorial_31___AR_Drone
             this.mySize.Height = (int)erodeNumericUpDown.Value;
             this.mySize.Width = (int)erodeNumericUpDown.Value;
 
-
+            //this is the logic for the trackbar values//
+            //TODO: Perhaps move this to a seperate function//
             if (toTrackTrackBar.Value == 0)
             {
                 toTrackObject = false;
                 toTrackTrackBar.BackColor = Color.Red;
                 this.isTrackingLabel.Text = "Not Tracking";
-            }
-            if (toTrackTrackBar.Value == 1)
+            } else if (toTrackTrackBar.Value == 1)
             {
                 toTrackObject = true;
                 toTrackTrackBar.BackColor = Color.Green;
                 this.isTrackingLabel.Text = "Tracking";
+            }
+            if (toFollowTrackBar.Value == 0 || toTrackTrackBar.Value == 0)
+            {
+                toFollowObject = false;
+                toFollowTrackBar.BackColor = Color.Red;
+                this.isfollowingLabel.Text = "Not Following";
+            } else if (toFollowTrackBar.Value == 1 && toTrackTrackBar.Value == 1)
+            {
+                toFollowObject = true;
+                toFollowTrackBar.BackColor = Color.Green;
+                this.isfollowingLabel.Text = "Following";
+            }
+            if (toPredictTrackBar.Value == 0 || toTrackTrackBar.Value == 0)
+            {
+                toPredictObject = false;
+                toPredictTrackBar.BackColor = Color.Red;
+                this.isfollowingLabel.Text = "Not Predicting";
+            } else if (toPredictTrackBar.Value == 1 && toTrackTrackBar.Value == 1)
+            {
+                toPredictObject = true;
+                toPredictTrackBar.BackColor = Color.Green;
+                this.isPredictingLabel.Text = "Predicting";
+
             }
 
         }
@@ -223,7 +250,7 @@ namespace Tutorial_31___AR_Drone
 
                     Rectangle myRectangle = new Rectangle(xAndYPoints.X - (diameterOfObject / 2), xAndYPoints.Y - (diameterOfObject / 2), diameterOfObject, diameterOfObject);
                     originalImage.Draw(myRectangle, new Bgr(Color.Crimson), 1);
-                    
+
                     distanceToObject = (widthOfObject * focalOfLens) / myRectangle.Width;
 
                 }
@@ -274,7 +301,7 @@ namespace Tutorial_31___AR_Drone
             Rectangle myRectangle = new Rectangle(100, 100, 30, 30);
             originalImage.Draw(myRectangle, new Bgr(Color.Crimson), 1);
 
-            
+
 
         }
 
@@ -529,6 +556,6 @@ namespace Tutorial_31___AR_Drone
         {
 
         }
-        
+
     }
 }
