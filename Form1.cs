@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows.Forms;
 using EZ_B;
 
@@ -41,9 +42,11 @@ namespace Tutorial_31___AR_Drone
 
         //to check
         Size mySize = new Size();
-        bool toTrackObject = false;
-        bool toFollowObject = false;
-        bool toPredictObject = false;
+        private bool toTrackObject = false;
+        private bool toFollowObject = false;
+        private bool toPredictObject = false;
+
+        public System.Xml.XmlTextReader reader;
 
         //for debug//
         //Capture capture;
@@ -69,8 +72,8 @@ namespace Tutorial_31___AR_Drone
 
             //this removes the right click ability from the Emgu.CV.UI.ImageBox//
 #if DEBUG
-            thresholdImageDisplay.FunctionalMode = Emgu.CV.UI.ImageBox.FunctionalModeOption.Minimum;
-            originalFeed.FunctionalMode = Emgu.CV.UI.ImageBox.FunctionalModeOption.Minimum;
+            thresholdImagePanel.FunctionalMode = Emgu.CV.UI.ImageBox.FunctionalModeOption.Minimum;
+            originalFeedPanel.FunctionalMode = Emgu.CV.UI.ImageBox.FunctionalModeOption.Minimum;
 #endif
 
         }
@@ -82,6 +85,12 @@ namespace Tutorial_31___AR_Drone
 
             m_SemiUrgentTimer.Stop();
             m_SemiUrgentTimer.Tick -= m_timer_TickSemiUrgent;
+
+
+            _camera.StopCamera();
+            ezB_Connect1.EZB.ARDrone.StopVideo();
+            ezB_Connect1.EZB.ARDrone.Disconnect();
+
 
         }
 
@@ -97,19 +106,19 @@ namespace Tutorial_31___AR_Drone
         {
 
             //flight characteristics//
-            this.currentUAVAltitudeTextbox.Text = ("altitude: " + ezB_Connect1.EZB.ARDrone.CurrentNavigationData.Altitude.ToString());
-            this.xUAVVelocityTextBox.Text = ("x velocity: " + ezB_Connect1.EZB.ARDrone.CurrentNavigationData.VX.ToString());
-            this.yUAVVelocityTextBox.Text = ("y velocity: " + ezB_Connect1.EZB.ARDrone.CurrentNavigationData.VY.ToString());
-            this.zUAVVelocityTextBox.Text = ("z velocity: " + ezB_Connect1.EZB.ARDrone.CurrentNavigationData.VZ.ToString());
+            currentUAVAltitudeTextbox.Text = ("altitude: " + ezB_Connect1.EZB.ARDrone.CurrentNavigationData.Altitude.ToString());
+            xUAVVelocityTextBox.Text = ("x velocity: " + ezB_Connect1.EZB.ARDrone.CurrentNavigationData.VX.ToString());
+            yUAVVelocityTextBox.Text = ("y velocity: " + ezB_Connect1.EZB.ARDrone.CurrentNavigationData.VY.ToString());
+            zUAVVelocityTextBox.Text = ("z velocity: " + ezB_Connect1.EZB.ARDrone.CurrentNavigationData.VZ.ToString());
 
             //object characteristics//
-            this.currentObjectAltitudeTextbox.Text = ("altitude: " + "NULL");
-            this.xObjectVelocityTextBox.Text = ("x velocity: " + "NULL");
-            this.yObjectVelocityTextBox.Text = ("y velocity: " + "NULL");
-            this.zObjectVelocityTextBox.Text = ("z velocity: " + "NULL");
-            this.posXTextBox.Text = ("posX: " + objectPosX.ToString());
-            this.posYTextBox.Text = ("posY: " + objectPosY.ToString());
-            this.distanceToObjectTextBox.Text = ("distance: " + distanceToObject.ToString());
+            currentObjectAltitudeTextbox.Text = ("altitude: " + "NULL");
+            xObjectVelocityTextBox.Text = ("x velocity: " + "NULL");
+            yObjectVelocityTextBox.Text = ("y velocity: " + "NULL");
+            zObjectVelocityTextBox.Text = ("z velocity: " + "NULL");
+            posXTextBox.Text = ("posX: " + objectPosX.ToString());
+            posYTextBox.Text = ("posY: " + objectPosY.ToString());
+            distanceToObjectTextBox.Text = ("distance: " + distanceToObject.ToString());
 
             //This sets the erode and dilate values//
             this.mySize.Height = (int)erodeNumericUpDown.Value;
@@ -126,7 +135,7 @@ namespace Tutorial_31___AR_Drone
             {
                 toTrackObject = true;
                 toTrackTrackBar.BackColor = Color.Green;
-                this.isTrackingLabel.Text = "Tracking";
+                this.isTrackingLabel.Text = "Tracking...";
             }
             if (toFollowTrackBar.Value == 0 || toTrackTrackBar.Value == 0)
             {
@@ -137,18 +146,18 @@ namespace Tutorial_31___AR_Drone
             {
                 toFollowObject = true;
                 toFollowTrackBar.BackColor = Color.Green;
-                this.isfollowingLabel.Text = "Following";
+                this.isfollowingLabel.Text = "Following...";
             }
             if (toPredictTrackBar.Value == 0 || toTrackTrackBar.Value == 0)
             {
                 toPredictObject = false;
                 toPredictTrackBar.BackColor = Color.Red;
-                this.isfollowingLabel.Text = "Not Predicting";
+                this.isPredictingLabel.Text = "Not Predicting";
             } else if (toPredictTrackBar.Value == 1 && toTrackTrackBar.Value == 1)
             {
                 toPredictObject = true;
                 toPredictTrackBar.BackColor = Color.Green;
-                this.isPredictingLabel.Text = "Predicting";
+                this.isPredictingLabel.Text = "Predicting...";
 
             }
 
@@ -162,7 +171,7 @@ namespace Tutorial_31___AR_Drone
             _camera = new Camera(ezB_Connect1.EZB);
             _camera.OnNewFrame += _camera_OnNewFrame;
 
-            button2.Enabled = false;
+            stopVideoAndDisconnectButton.Enabled = false;
 
             cbDroneVersion.Items.Clear();
             cbDroneVersion.Items.Add(EZ_B.ARDrone.ARDrone.ARDroneVersionEnum.V1);
@@ -173,6 +182,85 @@ namespace Tutorial_31___AR_Drone
             //Application.Idle += processFrameAndUpdateGUI;
 
         }
+
+        private void checkForUpdates()
+        {
+
+            Version newVersion = null;
+            string url = "";
+
+
+            try
+            {
+
+                string xmlurl = "http://oufc1234.weebly.com/uploads/7/5/1/5/75157909/updatetest.xml";
+                reader = new System.Xml.XmlTextReader(xmlurl);
+
+                reader.MoveToContent();
+
+                string elementName = "";
+
+                if ((reader.NodeType == System.Xml.XmlNodeType.Element) && (reader.Name == "myApp"))
+                {
+
+                    while (reader.Read())
+                    {
+
+                        if (reader.NodeType == System.Xml.XmlNodeType.Element)
+                        {
+
+                            elementName = reader.Name;
+                        } else
+                        {
+
+                            if (reader.NodeType == System.Xml.XmlNodeType.Text && reader.HasValue)
+                            {
+
+                                switch (elementName)
+                                {
+
+                                    case "version":
+                                        newVersion = new Version(reader.Value);
+                                        break;
+                                    case "url":
+                                        url = reader.Value;
+                                        break;
+
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception)
+            {
+                Console.WriteLine("FAILED");
+
+            } finally
+            {
+
+                if (reader != null)
+                {
+
+                    reader.Close();
+                }
+            }
+
+            Version curVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            if (curVersion.CompareTo(newVersion) < 0)
+            {
+
+                string title = "New version available!";
+                string question = "Would you like to download?";
+
+                if (DialogResult.Yes == MessageBox.Show(this, question, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                {
+
+                    System.Diagnostics.Process.Start(url);
+                }
+            }
+
+        }
+
 
         void _camera_OnNewFrame()
         {
@@ -261,8 +349,8 @@ namespace Tutorial_31___AR_Drone
             //screenDrawing(originalImage);
 
             //display the images//
-            thresholdImageDisplay.Image = thresholdImage;
-            originalFeed.Image = originalImage;
+            thresholdImagePanel.Image = thresholdImage;
+            originalFeedPanel.Image = originalImage;
 
             //dispose of images//
             originalImage.Dispose();
@@ -305,7 +393,7 @@ namespace Tutorial_31___AR_Drone
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void conectToARDoneButton_Click(object sender, EventArgs e)
         {
 
             if (cbDroneVersion.SelectedItem == null)
@@ -320,11 +408,11 @@ namespace Tutorial_31___AR_Drone
 
             ezB_Connect1.EZB.ARDrone.Connect(version);
 
-            button1.Enabled = false;
-            button2.Enabled = true;
+            conectToARDoneButton.Enabled = false;
+            stopVideoAndDisconnectButton.Enabled = true;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void stopVideoAndDisconnectButton_Click(object sender, EventArgs e)
         {
 
             _camera.StopCamera();
@@ -333,34 +421,33 @@ namespace Tutorial_31___AR_Drone
 
             ezB_Connect1.EZB.ARDrone.Disconnect();
 
-            button1.Enabled = true;
-            button2.Enabled = false;
+            conectToARDoneButton.Enabled = true;
+            stopVideoAndDisconnectButton.Enabled = false;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void testConnectionButton_Click(object sender, EventArgs e)
         {
-            //Set this to hello world in morse code//
             ezB_Connect1.EZB.ARDrone.PlayLedAnimation(EZ_B.ARDrone.Commands.LedAnimationEnum.BlinkGreen, 2, 3);
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void startEnginesButton_Click(object sender, EventArgs e)
         {
 
             //ezB_Connect1.EZB.ARDrone.TakeOff();
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void emergencyButton_Click(object sender, EventArgs e)
         {
 
             ezB_Connect1.EZB.ARDrone.Emergency();
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void startVideoButton_Click(object sender, EventArgs e)
         {
 
             _camera.StartCamera(
               new ValuePair(Camera.CAMERA_NAME_AR_DRONE, Camera.CAMERA_NAME_AR_DRONE),
-              panel1,
+              sourceFeedPanel,
               320,
               240);
 
@@ -368,7 +455,7 @@ namespace Tutorial_31___AR_Drone
 
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void stopVideoButton_Click(object sender, EventArgs e)
         {
 
             _camera.StopCamera();
@@ -376,27 +463,27 @@ namespace Tutorial_31___AR_Drone
             ezB_Connect1.EZB.ARDrone.StopVideo();
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        private void flatTrimButton_Click(object sender, EventArgs e)
         {
 
             ezB_Connect1.EZB.ARDrone.SetFlatTrim();
         }
 
-        private void button9_Click(object sender, EventArgs e)
+        private void hoverButton_Click(object sender, EventArgs e)
         {
 
             //ezB_Connect1.EZB.ARDrone.Hover();
 
         }
 
-        private void button19_Click(object sender, EventArgs e)
+        private void landButton_Click(object sender, EventArgs e)
         {
 
             ezB_Connect1.EZB.ARDrone.Land();
 
         }
 
-        private void button20_Click(object sender, EventArgs e)
+        private void setDefaultsButton_Click(object sender, EventArgs e)
         {
             ezB_Connect1.EZB.ARDrone.SendDefaultValues();
         }
@@ -411,7 +498,7 @@ namespace Tutorial_31___AR_Drone
             cbDroneVersion.SelectedIndex = 0;
         }
 
-        private void imageBox1_Click(object sender, EventArgs e)
+        private void thresholdImageDisplay_Click(object sender, EventArgs e)
         {
 
         }
@@ -555,6 +642,32 @@ namespace Tutorial_31___AR_Drone
         private void posXTextBox_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_NonUrgentTimer.Stop();
+            m_NonUrgentTimer.Tick -= m_timer_TickNonUrgent;
+
+            m_SemiUrgentTimer.Stop();
+            m_SemiUrgentTimer.Tick -= m_timer_TickSemiUrgent;
+
+            _camera.StopCamera();
+            ezB_Connect1.EZB.ARDrone.StopVideo();
+            ezB_Connect1.EZB.ARDrone.Disconnect();
+
+            Application.Exit();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox1 box = new AboutBox1();
+            box.ShowDialog();
+        }
+
+        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            checkForUpdates();
         }
 
     }

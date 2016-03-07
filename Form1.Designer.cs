@@ -30,20 +30,20 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button19 = new System.Windows.Forms.Button();
-            this.button20 = new System.Windows.Forms.Button();
+            this.conectToARDoneButton = new System.Windows.Forms.Button();
+            this.stopVideoAndDisconnectButton = new System.Windows.Forms.Button();
+            this.testConnectionButton = new System.Windows.Forms.Button();
+            this.startEnginesButton = new System.Windows.Forms.Button();
+            this.emergencyButton = new System.Windows.Forms.Button();
+            this.startVideoButton = new System.Windows.Forms.Button();
+            this.stopVideoButton = new System.Windows.Forms.Button();
+            this.flatTrimButton = new System.Windows.Forms.Button();
+            this.hoverButton = new System.Windows.Forms.Button();
+            this.landButton = new System.Windows.Forms.Button();
+            this.setDefaultsButton = new System.Windows.Forms.Button();
             this.ezB_Connect1 = new EZ_B.UCEZB_Connect();
             this.cbDroneVersion = new System.Windows.Forms.ComboBox();
-            this.thresholdImageDisplay = new Emgu.CV.UI.ImageBox();
+            this.thresholdImagePanel = new Emgu.CV.UI.ImageBox();
             this.HueLowNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.SaturationLowNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.ValueLowNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -62,9 +62,9 @@
             this.saturationHighTrackbar = new System.Windows.Forms.TrackBar();
             this.hueHighTrackbar = new System.Windows.Forms.TrackBar();
             this.resetThresholdValues = new System.Windows.Forms.Button();
-            this.originalFeed = new Emgu.CV.UI.ImageBox();
+            this.originalFeedPanel = new Emgu.CV.UI.ImageBox();
             this.currentUAVAltitudeTextbox = new System.Windows.Forms.TextBox();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.objectCharacteristicsPanel = new System.Windows.Forms.Panel();
             this.currentObjectAltitudeTextbox = new System.Windows.Forms.TextBox();
             this.zObjectVelocityTextBox = new System.Windows.Forms.TextBox();
             this.yObjectVelocityTextBox = new System.Windows.Forms.TextBox();
@@ -77,9 +77,9 @@
             this.erodeNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.toTrackTrackBar = new System.Windows.Forms.TrackBar();
             this.isTrackingLabel = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.sourceFeedPanel = new System.Windows.Forms.Panel();
             this.flightCharacteristicsLabel = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.flightCharacteristicsPanel = new System.Windows.Forms.Panel();
             this.zUAVVelocityTextBox = new System.Windows.Forms.TextBox();
             this.yUAVVelocityTextBox = new System.Windows.Forms.TextBox();
             this.xUAVVelocityTextBox = new System.Windows.Forms.TextBox();
@@ -87,7 +87,13 @@
             this.isfollowingLabel = new System.Windows.Forms.Label();
             this.isPredictingLabel = new System.Windows.Forms.Label();
             this.toPredictTrackBar = new System.Windows.Forms.TrackBar();
-            ((System.ComponentModel.ISupportInitialize)(this.thresholdImageDisplay)).BeginInit();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ((System.ComponentModel.ISupportInitialize)(this.thresholdImagePanel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.HueLowNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SaturationLowNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ValueLowNumericUpDown)).BeginInit();
@@ -100,128 +106,129 @@
             ((System.ComponentModel.ISupportInitialize)(this.valueHighTrackbar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.saturationHighTrackbar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hueHighTrackbar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.originalFeed)).BeginInit();
-            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.originalFeedPanel)).BeginInit();
+            this.objectCharacteristicsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.erodeNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.toTrackTrackBar)).BeginInit();
-            this.panel3.SuspendLayout();
+            this.flightCharacteristicsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.toFollowTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.toPredictTrackBar)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // conectToARDoneButton
             // 
-            this.button1.Location = new System.Drawing.Point(12, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 48);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Connect to AR Drone";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.conectToARDoneButton.Location = new System.Drawing.Point(12, 40);
+            this.conectToARDoneButton.Name = "conectToARDoneButton";
+            this.conectToARDoneButton.Size = new System.Drawing.Size(75, 48);
+            this.conectToARDoneButton.TabIndex = 1;
+            this.conectToARDoneButton.Text = "Connect to AR Drone";
+            this.conectToARDoneButton.UseVisualStyleBackColor = true;
+            this.conectToARDoneButton.Click += new System.EventHandler(this.conectToARDoneButton_Click);
             // 
-            // button2
+            // stopVideoAndDisconnectButton
             // 
-            this.button2.Location = new System.Drawing.Point(12, 153);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 52);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Stop Video and Disconnect";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.stopVideoAndDisconnectButton.Location = new System.Drawing.Point(12, 181);
+            this.stopVideoAndDisconnectButton.Name = "stopVideoAndDisconnectButton";
+            this.stopVideoAndDisconnectButton.Size = new System.Drawing.Size(75, 52);
+            this.stopVideoAndDisconnectButton.TabIndex = 4;
+            this.stopVideoAndDisconnectButton.Text = "Stop Video and Disconnect";
+            this.stopVideoAndDisconnectButton.UseVisualStyleBackColor = true;
+            this.stopVideoAndDisconnectButton.Click += new System.EventHandler(this.stopVideoAndDisconnectButton_Click);
             // 
-            // button3
+            // testConnectionButton
             // 
-            this.button3.Location = new System.Drawing.Point(12, 211);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(98, 23);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "Test Connection";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.testConnectionButton.Location = new System.Drawing.Point(12, 239);
+            this.testConnectionButton.Name = "testConnectionButton";
+            this.testConnectionButton.Size = new System.Drawing.Size(98, 23);
+            this.testConnectionButton.TabIndex = 5;
+            this.testConnectionButton.Text = "Test Connection";
+            this.testConnectionButton.UseVisualStyleBackColor = true;
+            this.testConnectionButton.Click += new System.EventHandler(this.testConnectionButton_Click);
             // 
-            // button4
+            // startEnginesButton
             // 
-            this.button4.Location = new System.Drawing.Point(93, 95);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(91, 23);
-            this.button4.TabIndex = 6;
-            this.button4.Text = "Start Engines";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.startEnginesButton.Location = new System.Drawing.Point(93, 123);
+            this.startEnginesButton.Name = "startEnginesButton";
+            this.startEnginesButton.Size = new System.Drawing.Size(91, 23);
+            this.startEnginesButton.TabIndex = 6;
+            this.startEnginesButton.Text = "Start Engines";
+            this.startEnginesButton.UseVisualStyleBackColor = true;
+            this.startEnginesButton.Click += new System.EventHandler(this.startEnginesButton_Click);
             // 
-            // button5
+            // emergencyButton
             // 
-            this.button5.BackColor = System.Drawing.Color.Red;
-            this.button5.Location = new System.Drawing.Point(93, 182);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(91, 23);
-            this.button5.TabIndex = 7;
-            this.button5.Text = "Emergency";
-            this.button5.UseVisualStyleBackColor = false;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.emergencyButton.BackColor = System.Drawing.Color.Red;
+            this.emergencyButton.Location = new System.Drawing.Point(93, 210);
+            this.emergencyButton.Name = "emergencyButton";
+            this.emergencyButton.Size = new System.Drawing.Size(91, 23);
+            this.emergencyButton.TabIndex = 7;
+            this.emergencyButton.Text = "Emergency";
+            this.emergencyButton.UseVisualStyleBackColor = false;
+            this.emergencyButton.Click += new System.EventHandler(this.emergencyButton_Click);
             // 
-            // button6
+            // startVideoButton
             // 
-            this.button6.Location = new System.Drawing.Point(12, 95);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 8;
-            this.button6.Text = "Start Video";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.startVideoButton.Location = new System.Drawing.Point(12, 123);
+            this.startVideoButton.Name = "startVideoButton";
+            this.startVideoButton.Size = new System.Drawing.Size(75, 23);
+            this.startVideoButton.TabIndex = 8;
+            this.startVideoButton.Text = "Start Video";
+            this.startVideoButton.UseVisualStyleBackColor = true;
+            this.startVideoButton.Click += new System.EventHandler(this.startVideoButton_Click);
             // 
-            // button7
+            // stopVideoButton
             // 
-            this.button7.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button7.Location = new System.Drawing.Point(12, 124);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 9;
-            this.button7.Text = "Stop Video";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.stopVideoButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.stopVideoButton.Location = new System.Drawing.Point(12, 152);
+            this.stopVideoButton.Name = "stopVideoButton";
+            this.stopVideoButton.Size = new System.Drawing.Size(75, 23);
+            this.stopVideoButton.TabIndex = 9;
+            this.stopVideoButton.Text = "Stop Video";
+            this.stopVideoButton.UseVisualStyleBackColor = true;
+            this.stopVideoButton.Click += new System.EventHandler(this.stopVideoButton_Click);
             // 
-            // button8
+            // flatTrimButton
             // 
-            this.button8.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button8.Location = new System.Drawing.Point(93, 66);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(91, 23);
-            this.button8.TabIndex = 11;
-            this.button8.Text = "Flat Trim";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.flatTrimButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.flatTrimButton.Location = new System.Drawing.Point(93, 94);
+            this.flatTrimButton.Name = "flatTrimButton";
+            this.flatTrimButton.Size = new System.Drawing.Size(91, 23);
+            this.flatTrimButton.TabIndex = 11;
+            this.flatTrimButton.Text = "Flat Trim";
+            this.flatTrimButton.UseVisualStyleBackColor = true;
+            this.flatTrimButton.Click += new System.EventHandler(this.flatTrimButton_Click);
             // 
-            // button9
+            // hoverButton
             // 
-            this.button9.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button9.Location = new System.Drawing.Point(93, 124);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(91, 23);
-            this.button9.TabIndex = 15;
-            this.button9.Text = "Hover";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.hoverButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.hoverButton.Location = new System.Drawing.Point(93, 152);
+            this.hoverButton.Name = "hoverButton";
+            this.hoverButton.Size = new System.Drawing.Size(91, 23);
+            this.hoverButton.TabIndex = 15;
+            this.hoverButton.Text = "Hover";
+            this.hoverButton.UseVisualStyleBackColor = true;
+            this.hoverButton.Click += new System.EventHandler(this.hoverButton_Click);
             // 
-            // button19
+            // landButton
             // 
-            this.button19.Location = new System.Drawing.Point(93, 153);
-            this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(91, 23);
-            this.button19.TabIndex = 29;
-            this.button19.Text = "Land";
-            this.button19.UseVisualStyleBackColor = true;
-            this.button19.Click += new System.EventHandler(this.button19_Click);
+            this.landButton.Location = new System.Drawing.Point(93, 181);
+            this.landButton.Name = "landButton";
+            this.landButton.Size = new System.Drawing.Size(91, 23);
+            this.landButton.TabIndex = 29;
+            this.landButton.Text = "Land";
+            this.landButton.UseVisualStyleBackColor = true;
+            this.landButton.Click += new System.EventHandler(this.landButton_Click);
             // 
-            // button20
+            // setDefaultsButton
             // 
-            this.button20.Location = new System.Drawing.Point(12, 66);
-            this.button20.Name = "button20";
-            this.button20.Size = new System.Drawing.Size(75, 23);
-            this.button20.TabIndex = 30;
-            this.button20.Text = "Set Defaults";
-            this.button20.UseVisualStyleBackColor = true;
-            this.button20.Click += new System.EventHandler(this.button20_Click);
+            this.setDefaultsButton.Location = new System.Drawing.Point(12, 94);
+            this.setDefaultsButton.Name = "setDefaultsButton";
+            this.setDefaultsButton.Size = new System.Drawing.Size(75, 23);
+            this.setDefaultsButton.TabIndex = 30;
+            this.setDefaultsButton.Text = "Set Defaults";
+            this.setDefaultsButton.UseVisualStyleBackColor = true;
+            this.setDefaultsButton.Click += new System.EventHandler(this.setDefaultsButton_Click);
             // 
             // ezB_Connect1
             // 
@@ -239,23 +246,23 @@
             // 
             this.cbDroneVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDroneVersion.FormattingEnabled = true;
-            this.cbDroneVersion.Location = new System.Drawing.Point(93, 27);
+            this.cbDroneVersion.Location = new System.Drawing.Point(93, 55);
             this.cbDroneVersion.Name = "cbDroneVersion";
             this.cbDroneVersion.Size = new System.Drawing.Size(91, 21);
             this.cbDroneVersion.TabIndex = 34;
             this.cbDroneVersion.SelectedIndexChanged += new System.EventHandler(this.cbDroneVersion_SelectedIndexChanged);
             // 
-            // thresholdImageDisplay
+            // thresholdImagePanel
             // 
-            this.thresholdImageDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.thresholdImageDisplay.Cursor = System.Windows.Forms.Cursors.Default;
-            this.thresholdImageDisplay.Location = new System.Drawing.Point(702, 12);
-            this.thresholdImageDisplay.Name = "thresholdImageDisplay";
-            this.thresholdImageDisplay.Size = new System.Drawing.Size(384, 317);
-            this.thresholdImageDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.thresholdImageDisplay.TabIndex = 2;
-            this.thresholdImageDisplay.TabStop = false;
-            this.thresholdImageDisplay.Click += new System.EventHandler(this.imageBox1_Click);
+            this.thresholdImagePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.thresholdImagePanel.Cursor = System.Windows.Forms.Cursors.Default;
+            this.thresholdImagePanel.Location = new System.Drawing.Point(702, 12);
+            this.thresholdImagePanel.Name = "thresholdImagePanel";
+            this.thresholdImagePanel.Size = new System.Drawing.Size(384, 317);
+            this.thresholdImagePanel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.thresholdImagePanel.TabIndex = 2;
+            this.thresholdImagePanel.TabStop = false;
+            this.thresholdImagePanel.Click += new System.EventHandler(this.thresholdImageDisplay_Click);
             // 
             // HueLowNumericUpDown
             // 
@@ -375,7 +382,7 @@
             // batteryLevelLabel
             // 
             this.batteryLevelLabel.AutoSize = true;
-            this.batteryLevelLabel.Location = new System.Drawing.Point(6, 9);
+            this.batteryLevelLabel.Location = new System.Drawing.Point(15, 9);
             this.batteryLevelLabel.Name = "batteryLevelLabel";
             this.batteryLevelLabel.Size = new System.Drawing.Size(86, 13);
             this.batteryLevelLabel.TabIndex = 50;
@@ -453,21 +460,21 @@
             this.resetThresholdValues.UseVisualStyleBackColor = true;
             this.resetThresholdValues.Click += new System.EventHandler(this.resetThresholdValues_Click);
             // 
-            // originalFeed
+            // originalFeedPanel
             // 
-            this.originalFeed.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.originalFeed.Cursor = System.Windows.Forms.Cursors.Default;
-            this.originalFeed.Location = new System.Drawing.Point(302, 342);
-            this.originalFeed.Name = "originalFeed";
-            this.originalFeed.Size = new System.Drawing.Size(384, 317);
-            this.originalFeed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.originalFeed.TabIndex = 2;
-            this.originalFeed.TabStop = false;
+            this.originalFeedPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.originalFeedPanel.Cursor = System.Windows.Forms.Cursors.Default;
+            this.originalFeedPanel.Location = new System.Drawing.Point(302, 342);
+            this.originalFeedPanel.Name = "originalFeedPanel";
+            this.originalFeedPanel.Size = new System.Drawing.Size(384, 317);
+            this.originalFeedPanel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.originalFeedPanel.TabIndex = 2;
+            this.originalFeedPanel.TabStop = false;
             // 
             // currentUAVAltitudeTextbox
             // 
             this.currentUAVAltitudeTextbox.BackColor = System.Drawing.SystemColors.Control;
-            this.currentUAVAltitudeTextbox.Location = new System.Drawing.Point(7, 55);
+            this.currentUAVAltitudeTextbox.Location = new System.Drawing.Point(17, 55);
             this.currentUAVAltitudeTextbox.Name = "currentUAVAltitudeTextbox";
             this.currentUAVAltitudeTextbox.ReadOnly = true;
             this.currentUAVAltitudeTextbox.Size = new System.Drawing.Size(81, 20);
@@ -477,25 +484,27 @@
             this.currentUAVAltitudeTextbox.WordWrap = false;
             this.currentUAVAltitudeTextbox.TextChanged += new System.EventHandler(this.currentAltitudeTextbox_TextChanged);
             // 
-            // panel2
+            // objectCharacteristicsPanel
             // 
-            this.panel2.BackColor = System.Drawing.Color.Gainsboro;
-            this.panel2.Controls.Add(this.currentObjectAltitudeTextbox);
-            this.panel2.Controls.Add(this.zObjectVelocityTextBox);
-            this.panel2.Controls.Add(this.yObjectVelocityTextBox);
-            this.panel2.Controls.Add(this.xObjectVelocityTextBox);
-            this.panel2.Controls.Add(this.distanceToObjectTextBox);
-            this.panel2.Controls.Add(this.posYTextBox);
-            this.panel2.Controls.Add(this.posXTextBox);
-            this.panel2.Location = new System.Drawing.Point(23, 439);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(117, 220);
-            this.panel2.TabIndex = 60;
+            this.objectCharacteristicsPanel.BackColor = System.Drawing.Color.Gainsboro;
+            this.objectCharacteristicsPanel.Controls.Add(this.currentObjectAltitudeTextbox);
+            this.objectCharacteristicsPanel.Controls.Add(this.zObjectVelocityTextBox);
+            this.objectCharacteristicsPanel.Controls.Add(this.yObjectVelocityTextBox);
+            this.objectCharacteristicsPanel.Controls.Add(this.xObjectVelocityTextBox);
+            this.objectCharacteristicsPanel.Controls.Add(this.distanceToObjectTextBox);
+            this.objectCharacteristicsPanel.Controls.Add(this.posYTextBox);
+            this.objectCharacteristicsPanel.Controls.Add(this.posXTextBox);
+            this.objectCharacteristicsPanel.Location = new System.Drawing.Point(23, 439);
+            this.objectCharacteristicsPanel.Name = "objectCharacteristicsPanel";
+            this.objectCharacteristicsPanel.Size = new System.Drawing.Size(117, 220);
+            this.objectCharacteristicsPanel.TabIndex = 60;
             // 
             // currentObjectAltitudeTextbox
             // 
-            this.currentObjectAltitudeTextbox.Location = new System.Drawing.Point(6, 85);
+            this.currentObjectAltitudeTextbox.BackColor = System.Drawing.SystemColors.Control;
+            this.currentObjectAltitudeTextbox.Location = new System.Drawing.Point(17, 88);
             this.currentObjectAltitudeTextbox.Name = "currentObjectAltitudeTextbox";
+            this.currentObjectAltitudeTextbox.ReadOnly = true;
             this.currentObjectAltitudeTextbox.Size = new System.Drawing.Size(81, 20);
             this.currentObjectAltitudeTextbox.TabIndex = 70;
             this.currentObjectAltitudeTextbox.Text = "altitude";
@@ -503,8 +512,10 @@
             // 
             // zObjectVelocityTextBox
             // 
-            this.zObjectVelocityTextBox.Location = new System.Drawing.Point(6, 163);
+            this.zObjectVelocityTextBox.BackColor = System.Drawing.SystemColors.Control;
+            this.zObjectVelocityTextBox.Location = new System.Drawing.Point(17, 166);
             this.zObjectVelocityTextBox.Name = "zObjectVelocityTextBox";
+            this.zObjectVelocityTextBox.ReadOnly = true;
             this.zObjectVelocityTextBox.Size = new System.Drawing.Size(82, 20);
             this.zObjectVelocityTextBox.TabIndex = 70;
             this.zObjectVelocityTextBox.Text = "z velocity";
@@ -512,8 +523,10 @@
             // 
             // yObjectVelocityTextBox
             // 
-            this.yObjectVelocityTextBox.Location = new System.Drawing.Point(6, 137);
+            this.yObjectVelocityTextBox.BackColor = System.Drawing.SystemColors.Control;
+            this.yObjectVelocityTextBox.Location = new System.Drawing.Point(17, 140);
             this.yObjectVelocityTextBox.Name = "yObjectVelocityTextBox";
+            this.yObjectVelocityTextBox.ReadOnly = true;
             this.yObjectVelocityTextBox.Size = new System.Drawing.Size(82, 20);
             this.yObjectVelocityTextBox.TabIndex = 74;
             this.yObjectVelocityTextBox.Text = "y velocity";
@@ -521,8 +534,10 @@
             // 
             // xObjectVelocityTextBox
             // 
-            this.xObjectVelocityTextBox.Location = new System.Drawing.Point(6, 111);
+            this.xObjectVelocityTextBox.BackColor = System.Drawing.SystemColors.Control;
+            this.xObjectVelocityTextBox.Location = new System.Drawing.Point(17, 114);
             this.xObjectVelocityTextBox.Name = "xObjectVelocityTextBox";
+            this.xObjectVelocityTextBox.ReadOnly = true;
             this.xObjectVelocityTextBox.Size = new System.Drawing.Size(82, 20);
             this.xObjectVelocityTextBox.TabIndex = 73;
             this.xObjectVelocityTextBox.Text = "x velocity";
@@ -530,7 +545,7 @@
             // 
             // distanceToObjectTextBox
             // 
-            this.distanceToObjectTextBox.Location = new System.Drawing.Point(6, 59);
+            this.distanceToObjectTextBox.Location = new System.Drawing.Point(17, 62);
             this.distanceToObjectTextBox.Name = "distanceToObjectTextBox";
             this.distanceToObjectTextBox.ReadOnly = true;
             this.distanceToObjectTextBox.Size = new System.Drawing.Size(81, 20);
@@ -540,7 +555,7 @@
             // 
             // posYTextBox
             // 
-            this.posYTextBox.Location = new System.Drawing.Point(6, 33);
+            this.posYTextBox.Location = new System.Drawing.Point(17, 36);
             this.posYTextBox.Name = "posYTextBox";
             this.posYTextBox.ReadOnly = true;
             this.posYTextBox.Size = new System.Drawing.Size(82, 20);
@@ -551,7 +566,7 @@
             // 
             // posXTextBox
             // 
-            this.posXTextBox.Location = new System.Drawing.Point(6, 7);
+            this.posXTextBox.Location = new System.Drawing.Point(17, 10);
             this.posXTextBox.Name = "posXTextBox";
             this.posXTextBox.ReadOnly = true;
             this.posXTextBox.Size = new System.Drawing.Size(81, 20);
@@ -597,7 +612,7 @@
             // toTrackTrackBar
             // 
             this.toTrackTrackBar.LargeChange = 1;
-            this.toTrackTrackBar.Location = new System.Drawing.Point(45, 371);
+            this.toTrackTrackBar.Location = new System.Drawing.Point(45, 356);
             this.toTrackTrackBar.Maximum = 1;
             this.toTrackTrackBar.Name = "toTrackTrackBar";
             this.toTrackTrackBar.Size = new System.Drawing.Size(61, 45);
@@ -607,19 +622,19 @@
             // isTrackingLabel
             // 
             this.isTrackingLabel.AutoSize = true;
-            this.isTrackingLabel.Location = new System.Drawing.Point(42, 355);
+            this.isTrackingLabel.Location = new System.Drawing.Point(42, 340);
             this.isTrackingLabel.Name = "isTrackingLabel";
             this.isTrackingLabel.Size = new System.Drawing.Size(69, 13);
             this.isTrackingLabel.TabIndex = 66;
             this.isTrackingLabel.Text = "Track Object";
             // 
-            // panel1
+            // sourceFeedPanel
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Location = new System.Drawing.Point(302, 12);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(384, 317);
-            this.panel1.TabIndex = 67;
+            this.sourceFeedPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.sourceFeedPanel.Location = new System.Drawing.Point(302, 12);
+            this.sourceFeedPanel.Name = "sourceFeedPanel";
+            this.sourceFeedPanel.Size = new System.Drawing.Size(384, 317);
+            this.sourceFeedPanel.TabIndex = 67;
             // 
             // flightCharacteristicsLabel
             // 
@@ -630,23 +645,23 @@
             this.flightCharacteristicsLabel.TabIndex = 68;
             this.flightCharacteristicsLabel.Text = "Flight Characteristics";
             // 
-            // panel3
+            // flightCharacteristicsPanel
             // 
-            this.panel3.BackColor = System.Drawing.Color.Gainsboro;
-            this.panel3.Controls.Add(this.zUAVVelocityTextBox);
-            this.panel3.Controls.Add(this.yUAVVelocityTextBox);
-            this.panel3.Controls.Add(this.xUAVVelocityTextBox);
-            this.panel3.Controls.Add(this.currentUAVAltitudeTextbox);
-            this.panel3.Controls.Add(this.batteryLevelBar);
-            this.panel3.Controls.Add(this.batteryLevelLabel);
-            this.panel3.Location = new System.Drawing.Point(157, 439);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(117, 220);
-            this.panel3.TabIndex = 69;
+            this.flightCharacteristicsPanel.BackColor = System.Drawing.Color.Gainsboro;
+            this.flightCharacteristicsPanel.Controls.Add(this.zUAVVelocityTextBox);
+            this.flightCharacteristicsPanel.Controls.Add(this.yUAVVelocityTextBox);
+            this.flightCharacteristicsPanel.Controls.Add(this.xUAVVelocityTextBox);
+            this.flightCharacteristicsPanel.Controls.Add(this.currentUAVAltitudeTextbox);
+            this.flightCharacteristicsPanel.Controls.Add(this.batteryLevelBar);
+            this.flightCharacteristicsPanel.Controls.Add(this.batteryLevelLabel);
+            this.flightCharacteristicsPanel.Location = new System.Drawing.Point(157, 439);
+            this.flightCharacteristicsPanel.Name = "flightCharacteristicsPanel";
+            this.flightCharacteristicsPanel.Size = new System.Drawing.Size(117, 220);
+            this.flightCharacteristicsPanel.TabIndex = 69;
             // 
             // zUAVVelocityTextBox
             // 
-            this.zUAVVelocityTextBox.Location = new System.Drawing.Point(7, 134);
+            this.zUAVVelocityTextBox.Location = new System.Drawing.Point(17, 134);
             this.zUAVVelocityTextBox.Name = "zUAVVelocityTextBox";
             this.zUAVVelocityTextBox.ReadOnly = true;
             this.zUAVVelocityTextBox.Size = new System.Drawing.Size(81, 20);
@@ -656,7 +671,7 @@
             // 
             // yUAVVelocityTextBox
             // 
-            this.yUAVVelocityTextBox.Location = new System.Drawing.Point(7, 108);
+            this.yUAVVelocityTextBox.Location = new System.Drawing.Point(17, 108);
             this.yUAVVelocityTextBox.Name = "yUAVVelocityTextBox";
             this.yUAVVelocityTextBox.ReadOnly = true;
             this.yUAVVelocityTextBox.Size = new System.Drawing.Size(81, 20);
@@ -666,7 +681,7 @@
             // 
             // xUAVVelocityTextBox
             // 
-            this.xUAVVelocityTextBox.Location = new System.Drawing.Point(7, 82);
+            this.xUAVVelocityTextBox.Location = new System.Drawing.Point(17, 82);
             this.xUAVVelocityTextBox.Name = "xUAVVelocityTextBox";
             this.xUAVVelocityTextBox.ReadOnly = true;
             this.xUAVVelocityTextBox.Size = new System.Drawing.Size(81, 20);
@@ -676,7 +691,7 @@
             // 
             // toFollowTrackBar
             // 
-            this.toFollowTrackBar.Location = new System.Drawing.Point(119, 371);
+            this.toFollowTrackBar.Location = new System.Drawing.Point(119, 356);
             this.toFollowTrackBar.Maximum = 1;
             this.toFollowTrackBar.Name = "toFollowTrackBar";
             this.toFollowTrackBar.Size = new System.Drawing.Size(61, 45);
@@ -685,7 +700,7 @@
             // isfollowingLabel
             // 
             this.isfollowingLabel.AutoSize = true;
-            this.isfollowingLabel.Location = new System.Drawing.Point(117, 355);
+            this.isfollowingLabel.Location = new System.Drawing.Point(117, 340);
             this.isfollowingLabel.Name = "isfollowingLabel";
             this.isfollowingLabel.Size = new System.Drawing.Size(71, 13);
             this.isfollowingLabel.TabIndex = 71;
@@ -694,7 +709,7 @@
             // isPredictingLabel
             // 
             this.isPredictingLabel.AutoSize = true;
-            this.isPredictingLabel.Location = new System.Drawing.Point(191, 355);
+            this.isPredictingLabel.Location = new System.Drawing.Point(191, 340);
             this.isPredictingLabel.Name = "isPredictingLabel";
             this.isPredictingLabel.Size = new System.Drawing.Size(74, 13);
             this.isPredictingLabel.TabIndex = 72;
@@ -702,32 +717,83 @@
             // 
             // toPredictTrackBar
             // 
-            this.toPredictTrackBar.Location = new System.Drawing.Point(194, 371);
+            this.toPredictTrackBar.Location = new System.Drawing.Point(194, 356);
             this.toPredictTrackBar.Maximum = 1;
             this.toPredictTrackBar.Name = "toPredictTrackBar";
             this.toPredictTrackBar.Size = new System.Drawing.Size(60, 45);
             this.toPredictTrackBar.TabIndex = 73;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.helpToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1096, 24);
+            this.menuStrip1.TabIndex = 74;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.quitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // quitToolStripMenuItem
+            // 
+            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            this.quitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.quitToolStripMenuItem.Text = "&Quit";
+            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkForUpdatesToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "&Help";
+            // 
+            // checkForUpdatesToolStripMenuItem
+            // 
+            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
+            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.checkForUpdatesToolStripMenuItem.Text = "Check For Updates";
+            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1096, 666);
+            this.ClientSize = new System.Drawing.Size(1096, 673);
             this.Controls.Add(this.toPredictTrackBar);
             this.Controls.Add(this.isPredictingLabel);
             this.Controls.Add(this.isfollowingLabel);
             this.Controls.Add(this.toFollowTrackBar);
-            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.flightCharacteristicsPanel);
             this.Controls.Add(this.flightCharacteristicsLabel);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.sourceFeedPanel);
             this.Controls.Add(this.isTrackingLabel);
             this.Controls.Add(this.toTrackTrackBar);
             this.Controls.Add(this.erodeNumericUpDown);
             this.Controls.Add(this.erodeLabel);
             this.Controls.Add(this.objectCharacteristicsLabel);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.originalFeed);
+            this.Controls.Add(this.objectCharacteristicsPanel);
+            this.Controls.Add(this.originalFeedPanel);
             this.Controls.Add(this.resetThresholdValues);
             this.Controls.Add(this.valueHighTrackbar);
             this.Controls.Add(this.saturationHighTrackbar);
@@ -744,25 +810,30 @@
             this.Controls.Add(this.ValueLowNumericUpDown);
             this.Controls.Add(this.SaturationLowNumericUpDown);
             this.Controls.Add(this.HueLowNumericUpDown);
-            this.Controls.Add(this.thresholdImageDisplay);
+            this.Controls.Add(this.thresholdImagePanel);
             this.Controls.Add(this.cbDroneVersion);
-            this.Controls.Add(this.button20);
-            this.Controls.Add(this.button19);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.setDefaultsButton);
+            this.Controls.Add(this.landButton);
+            this.Controls.Add(this.hoverButton);
+            this.Controls.Add(this.flatTrimButton);
+            this.Controls.Add(this.stopVideoButton);
+            this.Controls.Add(this.startVideoButton);
+            this.Controls.Add(this.emergencyButton);
+            this.Controls.Add(this.startEnginesButton);
+            this.Controls.Add(this.testConnectionButton);
+            this.Controls.Add(this.stopVideoAndDisconnectButton);
+            this.Controls.Add(this.conectToARDoneButton);
             this.Controls.Add(this.ezB_Connect1);
+            this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "UAV Quidditch";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.thresholdImageDisplay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thresholdImagePanel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.HueLowNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SaturationLowNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ValueLowNumericUpDown)).EndInit();
@@ -775,15 +846,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.valueHighTrackbar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.saturationHighTrackbar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.hueHighTrackbar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.originalFeed)).EndInit();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.originalFeedPanel)).EndInit();
+            this.objectCharacteristicsPanel.ResumeLayout(false);
+            this.objectCharacteristicsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.erodeNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.toTrackTrackBar)).EndInit();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
+            this.flightCharacteristicsPanel.ResumeLayout(false);
+            this.flightCharacteristicsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.toFollowTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.toPredictTrackBar)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -792,19 +865,19 @@
         #endregion
 
         private EZ_B.UCEZB_Connect ezB_Connect1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button19;
-        private System.Windows.Forms.Button button20;
+        private System.Windows.Forms.Button conectToARDoneButton;
+        private System.Windows.Forms.Button stopVideoAndDisconnectButton;
+        private System.Windows.Forms.Button testConnectionButton;
+        private System.Windows.Forms.Button startEnginesButton;
+        private System.Windows.Forms.Button emergencyButton;
+        private System.Windows.Forms.Button startVideoButton;
+        private System.Windows.Forms.Button stopVideoButton;
+        private System.Windows.Forms.Button flatTrimButton;
+        private System.Windows.Forms.Button hoverButton;
+        private System.Windows.Forms.Button landButton;
+        private System.Windows.Forms.Button setDefaultsButton;
         private System.Windows.Forms.ComboBox cbDroneVersion;
-        private Emgu.CV.UI.ImageBox thresholdImageDisplay;
+        private Emgu.CV.UI.ImageBox thresholdImagePanel;
         private System.Windows.Forms.NumericUpDown HueLowNumericUpDown;
         private System.Windows.Forms.NumericUpDown SaturationLowNumericUpDown;
         private System.Windows.Forms.NumericUpDown ValueLowNumericUpDown;
@@ -823,9 +896,9 @@
         private System.Windows.Forms.TrackBar saturationHighTrackbar;
         private System.Windows.Forms.TrackBar hueHighTrackbar;
         private System.Windows.Forms.Button resetThresholdValues;
-        private Emgu.CV.UI.ImageBox originalFeed;
+        private Emgu.CV.UI.ImageBox originalFeedPanel;
         private System.Windows.Forms.TextBox currentUAVAltitudeTextbox;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel objectCharacteristicsPanel;
         private System.Windows.Forms.Label objectCharacteristicsLabel;
         private System.Windows.Forms.TextBox posYTextBox;
         private System.Windows.Forms.TextBox posXTextBox;
@@ -833,10 +906,10 @@
         private System.Windows.Forms.NumericUpDown erodeNumericUpDown;
         private System.Windows.Forms.TrackBar toTrackTrackBar;
         private System.Windows.Forms.Label isTrackingLabel;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel sourceFeedPanel;
         private System.Windows.Forms.Label flightCharacteristicsLabel;
         private System.Windows.Forms.TextBox distanceToObjectTextBox;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel flightCharacteristicsPanel;
         private System.Windows.Forms.TextBox zUAVVelocityTextBox;
         private System.Windows.Forms.TextBox yUAVVelocityTextBox;
         private System.Windows.Forms.TextBox xUAVVelocityTextBox;
@@ -848,6 +921,12 @@
         private System.Windows.Forms.Label isfollowingLabel;
         private System.Windows.Forms.Label isPredictingLabel;
         private System.Windows.Forms.TrackBar toPredictTrackBar;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
     }
 }
 
