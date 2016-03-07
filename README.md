@@ -5,5 +5,4 @@ You'll also need the Emgu wrapper; http://www.emgu.com/wiki/index.php/Download_A
 
 
 Two branches for this repository;
-master - acts as a default location
-Secondary-Branch - acts as a location for Non-important changes. Perhaps some testing. 
+master - acts as a default location and Secondary-Branch - acts as a location for non-important changes. Perhaps some testing. 
