@@ -1,0 +1,10 @@
+﻿0.0.1.0
+- added menu bar
+	- can quit from menu bar
+	- can poll for updates (not fully implemented. For testing only)
+	- can show new About box
+- code tidy up
+	- added names to pre-existing labels
+	
+0.0.0.0
+- added tracking capabilities

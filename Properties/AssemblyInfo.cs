@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Martin Harris")]
 [assembly: AssemblyProduct("Quidditch UAV")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Education License")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

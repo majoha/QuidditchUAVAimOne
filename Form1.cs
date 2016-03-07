@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
+
 using EZ_B;
-
-
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using System.Drawing;
 
 namespace Tutorial_31___AR_Drone
 {
@@ -15,11 +14,12 @@ namespace Tutorial_31___AR_Drone
     public partial class Form1 : Form
     {
 
+        //these are the timers that will poll every x seconds//
         private Timer m_NonUrgentTimer;
         private Timer m_SemiUrgentTimer;
         private Camera _camera;
 
-        //This tracks for a blue object
+        //this tracks for a blue object
         private int iLowH = 82;
         private int iHighH = 179;
         private int iLowS = 100;
@@ -42,14 +42,14 @@ namespace Tutorial_31___AR_Drone
 
         //to check
         Size mySize = new Size();
+        private System.Xml.XmlTextReader reader;
         private bool toTrackObject = false;
         private bool toFollowObject = false;
         private bool toPredictObject = false;
 
-        public System.Xml.XmlTextReader reader;
-
         //for debug//
         //Capture capture;
+        //for debug//
 
         public Form1()
         {
@@ -90,7 +90,6 @@ namespace Tutorial_31___AR_Drone
             _camera.StopCamera();
             ezB_Connect1.EZB.ARDrone.StopVideo();
             ezB_Connect1.EZB.ARDrone.Disconnect();
-
 
         }
 
@@ -183,85 +182,6 @@ namespace Tutorial_31___AR_Drone
 
         }
 
-        private void checkForUpdates()
-        {
-
-            Version newVersion = null;
-            string url = "";
-
-
-            try
-            {
-
-                string xmlurl = "http://oufc1234.weebly.com/uploads/7/5/1/5/75157909/updatetest.xml";
-                reader = new System.Xml.XmlTextReader(xmlurl);
-
-                reader.MoveToContent();
-
-                string elementName = "";
-
-                if ((reader.NodeType == System.Xml.XmlNodeType.Element) && (reader.Name == "myApp"))
-                {
-
-                    while (reader.Read())
-                    {
-
-                        if (reader.NodeType == System.Xml.XmlNodeType.Element)
-                        {
-
-                            elementName = reader.Name;
-                        } else
-                        {
-
-                            if (reader.NodeType == System.Xml.XmlNodeType.Text && reader.HasValue)
-                            {
-
-                                switch (elementName)
-                                {
-
-                                    case "version":
-                                        newVersion = new Version(reader.Value);
-                                        break;
-                                    case "url":
-                                        url = reader.Value;
-                                        break;
-
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (Exception)
-            {
-                Console.WriteLine("FAILED");
-
-            } finally
-            {
-
-                if (reader != null)
-                {
-
-                    reader.Close();
-                }
-            }
-
-            Version curVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            if (curVersion.CompareTo(newVersion) < 0)
-            {
-
-                string title = "New version available!";
-                string question = "Would you like to download?";
-
-                if (DialogResult.Yes == MessageBox.Show(this, question, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question))
-                {
-
-                    System.Diagnostics.Process.Start(url);
-                }
-            }
-
-        }
-
-
         void _camera_OnNewFrame()
         {
 
@@ -290,7 +210,7 @@ namespace Tutorial_31___AR_Drone
             //----------------------------------------
             //These are replicated above and made to be adjustable - review this alteration
             //Size mySize = new Size();
-            //mySize.Width = 5;//5
+            //mySize.Width = 5;
             //mySize.Height = 5;
             Point myPoint = new Point();
             myPoint.X = -1;
@@ -314,6 +234,7 @@ namespace Tutorial_31___AR_Drone
             double m01 = CvInvoke.Moments(thresholdImage).M01;
             double mArea = CvInvoke.Moments(thresholdImage).M00;
 
+            //we check if the area is above a certain value otherwise it is probably noise//
             if (mArea > 10000 && toTrackObject)
             {
 
@@ -363,7 +284,6 @@ namespace Tutorial_31___AR_Drone
 
         private void setDefaultThresholdValues()
         {
-
             //Sets the default threshold values//
             HueLowNumericUpDown.Value = 82;
             HueHighNumericUpDown.Value = 255;
@@ -380,7 +300,6 @@ namespace Tutorial_31___AR_Drone
             saturationHighTrackbar.Value = (int)SaturationHighNumericUpDown.Value;
             valueHighTrackbar.Value = (int)ValueHighNumericUpDown.Value;
             //Sets the default threshold values//
-
         }
 
         private void screenDrawing(Image<Bgr, Byte> originalImage)
@@ -389,13 +308,10 @@ namespace Tutorial_31___AR_Drone
             Rectangle myRectangle = new Rectangle(100, 100, 30, 30);
             originalImage.Draw(myRectangle, new Bgr(Color.Crimson), 1);
 
-
-
         }
 
         private void conectToARDoneButton_Click(object sender, EventArgs e)
         {
-
             if (cbDroneVersion.SelectedItem == null)
             {
 
@@ -414,7 +330,6 @@ namespace Tutorial_31___AR_Drone
 
         private void stopVideoAndDisconnectButton_Click(object sender, EventArgs e)
         {
-
             _camera.StopCamera();
 
             ezB_Connect1.EZB.ARDrone.StopVideo();
@@ -432,19 +347,16 @@ namespace Tutorial_31___AR_Drone
 
         private void startEnginesButton_Click(object sender, EventArgs e)
         {
-
             //ezB_Connect1.EZB.ARDrone.TakeOff();
         }
 
         private void emergencyButton_Click(object sender, EventArgs e)
         {
-
             ezB_Connect1.EZB.ARDrone.Emergency();
         }
 
         private void startVideoButton_Click(object sender, EventArgs e)
         {
-
             _camera.StartCamera(
               new ValuePair(Camera.CAMERA_NAME_AR_DRONE, Camera.CAMERA_NAME_AR_DRONE),
               sourceFeedPanel,
@@ -452,14 +364,11 @@ namespace Tutorial_31___AR_Drone
               240);
 
             ezB_Connect1.EZB.ARDrone.StartVideo();
-
         }
 
         private void stopVideoButton_Click(object sender, EventArgs e)
         {
-
             _camera.StopCamera();
-
             ezB_Connect1.EZB.ARDrone.StopVideo();
         }
 
@@ -471,16 +380,12 @@ namespace Tutorial_31___AR_Drone
 
         private void hoverButton_Click(object sender, EventArgs e)
         {
-
             //ezB_Connect1.EZB.ARDrone.Hover();
-
         }
 
         private void landButton_Click(object sender, EventArgs e)
         {
-
             ezB_Connect1.EZB.ARDrone.Land();
-
         }
 
         private void setDefaultsButton_Click(object sender, EventArgs e)
@@ -667,7 +572,7 @@ namespace Tutorial_31___AR_Drone
 
         private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            checkForUpdates();
+            checkForUpdates checkForUpdates = new checkForUpdates();
         }
 
     }
