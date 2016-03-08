@@ -111,7 +111,7 @@
     </Reference>
     <Reference Include="EZ_B, Version=2015.7.28.0, Culture=neutral, PublicKeyToken=c3a3457c97d352d9, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\EZ_B.dll</HintPath>
+      <HintPath>..\..\..\Desktop\EZ-B SDK Windows\DLL\EZ_B.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
