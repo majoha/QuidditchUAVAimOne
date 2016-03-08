@@ -19,4 +19,5 @@ General;
 TODO;
 * include more AR stuff on the GUI, such as the flight details
 	- give the ability to set important values such as max x, y and z velocity
-* Draw the necessary lines on the screen for co-ordination help
+* draw the necessary lines on the screen for co-ordination help
+* add the ability to use either the Parrot or webcam (i.e. load from config file the relevant information like focal length)
