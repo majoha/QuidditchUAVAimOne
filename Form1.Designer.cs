@@ -96,6 +96,14 @@
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveUAVUp = new System.Windows.Forms.Button();
+            this.moveUAVDown = new System.Windows.Forms.Button();
+            this.moveUAVForward = new System.Windows.Forms.Button();
+            this.moveUAVBackward = new System.Windows.Forms.Button();
+            this.moveUAVLeftRoll = new System.Windows.Forms.Button();
+            this.moveUAVRightRoll = new System.Windows.Forms.Button();
+            this.moveUAVAnticlockwiseYaw = new System.Windows.Forms.Button();
+            this.moveUAVClockwiseYaw = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.thresholdImagePanel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.HueLowNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SaturationLowNumericUpDown)).BeginInit();
@@ -733,7 +741,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1319, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1284, 24);
             this.menuStrip1.TabIndex = 74;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -799,12 +807,106 @@
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // moveUAVUp
+            // 
+            this.moveUAVUp.Location = new System.Drawing.Point(437, 483);
+            this.moveUAVUp.Name = "moveUAVUp";
+            this.moveUAVUp.Size = new System.Drawing.Size(75, 23);
+            this.moveUAVUp.TabIndex = 75;
+            this.moveUAVUp.Text = "Up";
+            this.moveUAVUp.UseVisualStyleBackColor = true;
+            this.moveUAVUp.Click += new System.EventHandler(this.moveUAVUp_Click);
+            // 
+            // moveUAVDown
+            // 
+            this.moveUAVDown.Location = new System.Drawing.Point(437, 566);
+            this.moveUAVDown.Name = "moveUAVDown";
+            this.moveUAVDown.Size = new System.Drawing.Size(75, 23);
+            this.moveUAVDown.TabIndex = 76;
+            this.moveUAVDown.Text = "Down";
+            this.moveUAVDown.UseVisualStyleBackColor = true;
+            this.moveUAVDown.Click += new System.EventHandler(this.moveUAVDown_Click);
+            // 
+            // moveUAVForward
+            // 
+            this.moveUAVForward.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moveUAVForward.Location = new System.Drawing.Point(329, 457);
+            this.moveUAVForward.Name = "moveUAVForward";
+            this.moveUAVForward.Size = new System.Drawing.Size(48, 49);
+            this.moveUAVForward.TabIndex = 77;
+            this.moveUAVForward.Text = "↑";
+            this.moveUAVForward.UseVisualStyleBackColor = true;
+            this.moveUAVForward.Click += new System.EventHandler(this.moveUAVForward_Click);
+            // 
+            // moveUAVBackward
+            // 
+            this.moveUAVBackward.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moveUAVBackward.Location = new System.Drawing.Point(329, 566);
+            this.moveUAVBackward.Name = "moveUAVBackward";
+            this.moveUAVBackward.Size = new System.Drawing.Size(48, 49);
+            this.moveUAVBackward.TabIndex = 78;
+            this.moveUAVBackward.Text = "↓";
+            this.moveUAVBackward.UseVisualStyleBackColor = true;
+            this.moveUAVBackward.Click += new System.EventHandler(this.moveUAVBackward_Click);
+            // 
+            // moveUAVLeftRoll
+            // 
+            this.moveUAVLeftRoll.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moveUAVLeftRoll.Location = new System.Drawing.Point(275, 511);
+            this.moveUAVLeftRoll.Name = "moveUAVLeftRoll";
+            this.moveUAVLeftRoll.Size = new System.Drawing.Size(48, 49);
+            this.moveUAVLeftRoll.TabIndex = 79;
+            this.moveUAVLeftRoll.Text = "←";
+            this.moveUAVLeftRoll.UseVisualStyleBackColor = true;
+            this.moveUAVLeftRoll.Click += new System.EventHandler(this.moveUAVLeftRoll_Click);
+            // 
+            // moveUAVRightRoll
+            // 
+            this.moveUAVRightRoll.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moveUAVRightRoll.Location = new System.Drawing.Point(383, 513);
+            this.moveUAVRightRoll.Name = "moveUAVRightRoll";
+            this.moveUAVRightRoll.Size = new System.Drawing.Size(48, 47);
+            this.moveUAVRightRoll.TabIndex = 80;
+            this.moveUAVRightRoll.Text = "→";
+            this.moveUAVRightRoll.UseVisualStyleBackColor = true;
+            this.moveUAVRightRoll.Click += new System.EventHandler(this.moveUAVRightRoll_Click);
+            // 
+            // moveUAVAnticlockwiseYaw
+            // 
+            this.moveUAVAnticlockwiseYaw.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moveUAVAnticlockwiseYaw.Location = new System.Drawing.Point(275, 457);
+            this.moveUAVAnticlockwiseYaw.Name = "moveUAVAnticlockwiseYaw";
+            this.moveUAVAnticlockwiseYaw.Size = new System.Drawing.Size(48, 49);
+            this.moveUAVAnticlockwiseYaw.TabIndex = 81;
+            this.moveUAVAnticlockwiseYaw.Text = "↺";
+            this.moveUAVAnticlockwiseYaw.UseVisualStyleBackColor = true;
+            this.moveUAVAnticlockwiseYaw.Click += new System.EventHandler(this.moveUAVAnticlockwiseYaw_Click);
+            // 
+            // moveUAVClockwiseYaw
+            // 
+            this.moveUAVClockwiseYaw.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moveUAVClockwiseYaw.Location = new System.Drawing.Point(383, 457);
+            this.moveUAVClockwiseYaw.Name = "moveUAVClockwiseYaw";
+            this.moveUAVClockwiseYaw.Size = new System.Drawing.Size(48, 49);
+            this.moveUAVClockwiseYaw.TabIndex = 82;
+            this.moveUAVClockwiseYaw.Text = "↻";
+            this.moveUAVClockwiseYaw.UseVisualStyleBackColor = true;
+            this.moveUAVClockwiseYaw.Click += new System.EventHandler(this.moveUAVClockwiseYaw_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1319, 685);
+            this.ClientSize = new System.Drawing.Size(1284, 685);
+            this.Controls.Add(this.moveUAVClockwiseYaw);
+            this.Controls.Add(this.moveUAVAnticlockwiseYaw);
+            this.Controls.Add(this.moveUAVRightRoll);
+            this.Controls.Add(this.moveUAVLeftRoll);
+            this.Controls.Add(this.moveUAVBackward);
+            this.Controls.Add(this.moveUAVForward);
+            this.Controls.Add(this.moveUAVDown);
+            this.Controls.Add(this.moveUAVUp);
             this.Controls.Add(this.toPredictTrackBar);
             this.Controls.Add(this.isPredictingLabel);
             this.Controls.Add(this.isfollowingLabel);
@@ -955,6 +1057,14 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem restartApplicationToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.Button moveUAVUp;
+        private System.Windows.Forms.Button moveUAVDown;
+        private System.Windows.Forms.Button moveUAVForward;
+        private System.Windows.Forms.Button moveUAVBackward;
+        private System.Windows.Forms.Button moveUAVLeftRoll;
+        private System.Windows.Forms.Button moveUAVRightRoll;
+        private System.Windows.Forms.Button moveUAVAnticlockwiseYaw;
+        private System.Windows.Forms.Button moveUAVClockwiseYaw;
     }
 }
 
