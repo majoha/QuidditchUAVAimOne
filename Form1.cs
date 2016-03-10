@@ -43,11 +43,12 @@ namespace Tutorial_31___AR_Drone
         private int objectLastY = 0;
 
         private float distanceToObject = 0;//mm
-        private int widthOfObject = 52;//mm
+        private int widthOfObject = 72;//mm
         /*These are the widths of objects used while developing
          * 
          * - Pledge container lid = 52mm
          * - orange hockey ball = 65mm
+         * - purple lid = 72mm
          * 
          */
         private int focalOfLens = 203;//mm
@@ -60,9 +61,9 @@ namespace Tutorial_31___AR_Drone
         //Snitch Variables//
 
         //PIDControllerXVariables//
-        private float pGain = 0.05f;
-        private float iGain = 0.05f;
-        private float dGain = 0.05f;
+        private float pGain = 0.50f;
+        private float iGain = 0.50f;
+        private float dGain = 0.50f;
 
         private float pCorrectionX = 0.0f;
         private float iCorrectionX = 0.0f;
@@ -72,7 +73,10 @@ namespace Tutorial_31___AR_Drone
         private float lastErrorX = 0.0f;
         private float iCumErrorX = 0.0f;
         private float errorX = 0.0f;
-        private float setPointX = 600.0f;//mm
+        private float setPointX = 300.0f;//mm
+
+        private float maxCorrectionX = 0.20f;
+        private float minCorrectionX = -0.20f;
         //PIDControllerXVariables//
 
         //to check
@@ -153,7 +157,8 @@ namespace Tutorial_31___AR_Drone
         //and updates non-urgent items//
         void m_timer_TickNonUrgent(object sender, EventArgs e)
         {
-            this.batteryLevelBar.Value = ezB_Connect1.EZB.ARDrone.CurrentNavigationData.BatteryLevel;
+            batteryLevelLabel.Text = "Battery Level " + ezB_Connect1.EZB.ARDrone.CurrentNavigationData.BatteryLevel.ToString() + "%";
+            batteryLevelBar.Value = ezB_Connect1.EZB.ARDrone.CurrentNavigationData.BatteryLevel;
         }
 
         //this function is called every 1/2 a second//
@@ -333,7 +338,7 @@ namespace Tutorial_31___AR_Drone
         {
 
             System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
-            stopWatch.Start();
+            //stopWatch.Start();
 
             //original//
             Image<Bgr, byte> originalImage = new Image<Bgr, byte>(_camera.GetCurrentBitmap);
@@ -376,7 +381,7 @@ namespace Tutorial_31___AR_Drone
             double mArea = CvInvoke.Moments(thresholdImage).M00;
 
             //we check if the area is above a certain value otherwise it is probably noise//
-            if (mArea > 10000 && toTrackObject)
+            if (mArea >= 30000 && toTrackObject)
             {
 
                 objectPosX = (int)(m10 / mArea);
@@ -423,9 +428,10 @@ namespace Tutorial_31___AR_Drone
             originalImage.Dispose();
             HsvImage.Dispose();
             thresholdImage.Dispose();
-            stopWatch.Stop();
-            double duration = stopWatch.ElapsedMilliseconds / 1000.0;
-            Console.WriteLine("That loop took " + duration + "s");
+
+            //stopWatch.Stop();
+            //double duration = stopWatch.ElapsedMilliseconds / 1000.0;
+            //Console.WriteLine("That loop took " + duration + "s");
         }
 
         private float PIDControllerForward(float distanceToObject)
@@ -441,11 +447,22 @@ namespace Tutorial_31___AR_Drone
             //derivative
             slopeX = errorX - lastErrorX;
             dCorrectionX = dGain * slopeX;
+            
             lastErrorX = errorX;
 
-            //Todo: Add upper bounds
-
             float xCorrection = (pCorrectionX + iCorrectionX + dCorrectionX);
+            //scale the value to fit within the wanted moveSensitivity
+            Console.WriteLine("The value of xCorrection is " + xCorrection);
+            xCorrection /= 10000.0f;
+
+            if (xCorrection > maxCorrectionX)
+            {
+                xCorrection = maxCorrectionX;
+            }
+            if (xCorrection < minCorrectionX) {
+
+                xCorrection = minCorrectionX;
+            }
 
             return xCorrection;
         }
@@ -674,11 +691,6 @@ namespace Tutorial_31___AR_Drone
         private void batteryLevelLabel_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            batteryLevelBar_Click(sender, e);
         }
 
         private void Hue_ValueChanged(object sender, EventArgs e)
