@@ -43,7 +43,7 @@ namespace Tutorial_31___AR_Drone
         private int objectLastY = 0;
 
         private float distanceToObject = 0;//mm
-        private int widthOfObject = 38;//mm
+        private int widthOfObject = 52;//mm
         /*These are the widths of objects used while developing
          * 
          * - Pledge container lid = 52mm
@@ -362,10 +362,10 @@ namespace Tutorial_31___AR_Drone
             Emgu.CV.Structure.MCvScalar erodeAndDilateScalar = new Emgu.CV.Structure.MCvScalar();
             erodeAndDilateScalar.V0.Equals(1.0);
             CvInvoke.Erode(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
-            CvInvoke.Erode(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
+            //CvInvoke.Erode(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
 
             CvInvoke.Dilate(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
-            CvInvoke.Dilate(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
+            //CvInvoke.Dilate(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
             //----------------------------------------
 
 
@@ -405,7 +405,7 @@ namespace Tutorial_31___AR_Drone
 
                     if (toFollowObject)
                     {
-                        PIDControllerForward(distanceToObject);
+                        moveUAVForwardPID(PIDControllerForward(distanceToObject));
                     }
 
                 }
@@ -425,7 +425,7 @@ namespace Tutorial_31___AR_Drone
             thresholdImage.Dispose();
             stopWatch.Stop();
             double duration = stopWatch.ElapsedMilliseconds / 1000.0;
-            //Console.WriteLine("That loop took " + duration + "s");
+            Console.WriteLine("That loop took " + duration + "s");
         }
 
         private float PIDControllerForward(float distanceToObject)
@@ -550,13 +550,13 @@ namespace Tutorial_31___AR_Drone
 
         private void moveUAVForwardPID(float moveAmount)
         {
-            ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(0, -moveAmount, 0, 0);
+            //ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(0, -moveAmount, 0, 0);
 
-            System.Threading.Thread.Sleep(moveSleepTime);
+            //System.Threading.Thread.Sleep(moveSleepTime);
 
-            ezB_Connect1.EZB.ARDrone.Hover();
+            //ezB_Connect1.EZB.ARDrone.Hover();
 
-            Console.WriteLine("Moving towards the target");
+            Console.WriteLine("Moving towards the target at a rate of " + moveAmount);
         }
 
         private void moveUAVBackward_Click(object sender, EventArgs e)
