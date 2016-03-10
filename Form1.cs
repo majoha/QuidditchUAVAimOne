@@ -22,7 +22,7 @@ namespace Tutorial_31___AR_Drone
         private Camera _camera;
 
         //for webcam//
-        private Capture capture;
+        //private Capture capture;
 
         //variables which dictate the speed at which the UAV will move when changing direction//
         float moveSensitivivivity = 0.20f;
@@ -43,14 +43,14 @@ namespace Tutorial_31___AR_Drone
         private int objectLastY = 0;
 
         private float distanceToObject = 0;//mm
-        private int widthOfObject = 52;//mm
+        private int widthOfObject = 38;//mm
         /*These are the widths of objects used while developing
          * 
          * - Pledge container lid = 52mm
          * - orange hockey ball = 65mm
          * 
          */
-        private int focalOfLens = 790;//mm
+        private int focalOfLens = 203;//mm
         /*These are a list of focal lengths which depend on the debugging method i.e. webcam or Parrot
          *
          * - webcam = ~469mm //~770
@@ -114,12 +114,12 @@ namespace Tutorial_31___AR_Drone
             setDefaultThresholdValues();
 
             //For use with the Parrot//
-            //_camera = new Camera(ezB_Connect1.EZB);
-            //_camera.OnNewFrame += _camera_OnNewFrame;
+            _camera = new Camera(ezB_Connect1.EZB);
+            _camera.OnNewFrame += _camera_OnNewFrame;
 
             //for use with webcam instead of UAV//
-            capture = new Capture(0);
-            Application.Idle += processFrameAndUpdateGUI;
+            //capture = new Capture(0);
+            //Application.Idle += processFrameAndUpdateGUI;
 
             stopVideoAndDisconnectButton.Enabled = false;
 
@@ -143,8 +143,8 @@ namespace Tutorial_31___AR_Drone
             ezB_Connect1.EZB.ARDrone.Disconnect();
 
             //for webcam//
-            capture.Stop();
-            capture.Dispose();
+            //capture.Stop();
+            //capture.Dispose();
             //for webcam//
 
         }
@@ -160,7 +160,6 @@ namespace Tutorial_31___AR_Drone
         //and updates semi urgent items//
         void m_timer_TickSemiUrgent(object sender, EventArgs e)
         {
-
             //flight characteristics//
             currentUAVAltitudeTextbox.Text = ("altitude: " + ezB_Connect1.EZB.ARDrone.CurrentNavigationData.Altitude.ToString());
             xUAVVelocityTextBox.Text = ("x velocity: " + ezB_Connect1.EZB.ARDrone.CurrentNavigationData.VX.ToString());
@@ -220,124 +219,16 @@ namespace Tutorial_31___AR_Drone
         }
 
         //this function is called on new frame from the WEBCAM. So when debugging using that, edit this function//
-        void processFrameAndUpdateGUI(object sender, EventArgs arg)
-        {
-            System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
-            stopWatch.Start();
-
-            //to load from webcam when not using the Parrot//
-            Mat matOriginalImage;
-            matOriginalImage = capture.QueryFrame();
-            Image<Bgr, Byte> originalImage = matOriginalImage.ToImage<Bgr, Byte>();
-
-
-            //----------------------------------------
-            Mat HsvImage = new Mat();
-            CvInvoke.CvtColor(originalImage, HsvImage, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
-            //----------------------------------------
-
-            //----------------------------------------
-            Mat thresholdImage = new Mat();
-            CvInvoke.InRange(HsvImage, new ScalarArray(new MCvScalar(iLowH, iLowS, iLowV)), new ScalarArray(new MCvScalar(iHighH, iHighS, iHighV)), thresholdImage);
-            //----------------------------------------
-
-            //----------------------------------------
-            //These are replicated above and made to be adjustable - review this alteration
-            //Size mySize = new Size();
-            //mySize.Width = 5;
-            //mySize.Height = 5;
-            Point myPoint = new Point();
-            myPoint.X = -1;
-            myPoint.Y = -1;
-
-
-            Mat erodeAndDilateEllipse = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Ellipse, mySize, myPoint);
-            Emgu.CV.Structure.MCvScalar erodeAndDilateScalar = new Emgu.CV.Structure.MCvScalar();
-            erodeAndDilateScalar.V0.Equals(1.0);
-            CvInvoke.Erode(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
-            CvInvoke.Erode(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
-
-            CvInvoke.Dilate(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
-            CvInvoke.Dilate(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
-            //----------------------------------------
-
-
-            //----------------------------------------
-            CvInvoke.Moments(thresholdImage);
-            double m10 = CvInvoke.Moments(thresholdImage).M10;
-            double m01 = CvInvoke.Moments(thresholdImage).M01;
-            double mArea = CvInvoke.Moments(thresholdImage).M00;
-
-            //we check if the area is above a certain value otherwise it is probably noise//
-            if (mArea > 10000 && toTrackObject)
-            {
-
-                objectPosX = (int)(m10 / mArea);
-                objectPosY = (int)(m01 / mArea);
-
-                //these are for the drawing of the line
-                Point xAndYPoints = new Point();
-                xAndYPoints.X = objectPosX;
-                xAndYPoints.Y = objectPosY;
-
-
-                //TODO: Change this variable name
-                MCvScalar myColour = new MCvScalar(0, 0, 0);
-
-                //we only draw if the object is on the UAV screen//
-                if (objectLastX >= 0 && objectLastY >= 0 && objectPosX >= 0 && objectPosY >= 0)
-                {
-                    //draws a line from last point to new point//
-                    //CvInvoke.Line(originalImage, new Point(xAndYPoints.X, xAndYPoints.Y), new Point(objectLastX, objectLastY), myColour, 1);
-
-                    int diameterOfObject = ((int)Math.Sqrt(mArea) / 14);//23//14
-
-                    Rectangle myRectangle = new Rectangle(xAndYPoints.X - (diameterOfObject / 2), xAndYPoints.Y - (diameterOfObject / 2), diameterOfObject, diameterOfObject);
-                    originalImage.Draw(myRectangle, new Bgr(Color.Crimson), 1);
-
-                    distanceToObject = (widthOfObject * focalOfLens) / myRectangle.Width;
-
-                    if (toFollowObject)
-                    {
-                        Console.WriteLine("Distance to the object is " + distanceToObject);
-                        if (distanceToObject > 200.0f)
-                        {
-                            //Todo: add code that will allow the UAV to move according to the distance given above
-                            moveUAVForwardPID(PIDControllerForward(distanceToObject));
-
-                        }
-                    }
-
-                }
-                objectLastX = objectPosX;
-                objectLastY = objectPosY;
-            }
-
-            //screenDrawing(originalImage);
-
-            //display the images//
-            thresholdImagePanel.Image = thresholdImage;
-            originalFeedPanel.Image = originalImage;
-
-            //dispose of images//
-            originalImage.Dispose();
-            HsvImage.Dispose();
-            thresholdImage.Dispose();
-            stopWatch.Stop();
-            double duration = stopWatch.ElapsedMilliseconds / 1000.0;
-            //Console.WriteLine("That loop took " + duration + "s");
-
-        }
-
-        //this function is called on new frame from the Parrot. So when debugging using that, edit this function//
-        //void _camera_OnNewFrame()
+        //void processFrameAndUpdateGUI(object sender, EventArgs arg)
         //{
-
         //    System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
         //    stopWatch.Start();
 
-        //    //original//
-        //    Image<Bgr, byte> originalImage = new Image<Bgr, byte>(_camera.GetCurrentBitmap);
+        //    //to load from webcam when not using the Parrot//
+        //    Mat matOriginalImage;
+        //    matOriginalImage = capture.QueryFrame();
+        //    Image<Bgr, Byte> originalImage = matOriginalImage.ToImage<Bgr, Byte>();
+
 
         //    //----------------------------------------
         //    Mat HsvImage = new Mat();
@@ -395,9 +286,10 @@ namespace Tutorial_31___AR_Drone
         //        //we only draw if the object is on the UAV screen//
         //        if (objectLastX >= 0 && objectLastY >= 0 && objectPosX >= 0 && objectPosY >= 0)
         //        {
-        //            CvInvoke.Line(originalImage, new Point(xAndYPoints.X, xAndYPoints.Y), new Point(objectLastX, objectLastY), myColour, 1);
+        //            //draws a line from last point to new point//
+        //            //CvInvoke.Line(originalImage, new Point(xAndYPoints.X, xAndYPoints.Y), new Point(objectLastX, objectLastY), myColour, 1);
 
-        //            int diameterOfObject = ((int)Math.Sqrt(mArea) / 14);
+        //            int diameterOfObject = ((int)Math.Sqrt(mArea) / 14);//23//14
 
         //            Rectangle myRectangle = new Rectangle(xAndYPoints.X - (diameterOfObject / 2), xAndYPoints.Y - (diameterOfObject / 2), diameterOfObject, diameterOfObject);
         //            originalImage.Draw(myRectangle, new Bgr(Color.Crimson), 1);
@@ -406,7 +298,13 @@ namespace Tutorial_31___AR_Drone
 
         //            if (toFollowObject)
         //            {
-        //                PIDControllerForward(distanceToObject);
+        //                Console.WriteLine("Distance to the object is " + distanceToObject);
+        //                if (distanceToObject > 200.0f)
+        //                {
+        //                    //Todo: add code that will allow the UAV to move according to the distance given above
+        //                    moveUAVForwardPID(PIDControllerForward(distanceToObject));
+
+        //                }
         //            }
 
         //        }
@@ -427,7 +325,108 @@ namespace Tutorial_31___AR_Drone
         //    stopWatch.Stop();
         //    double duration = stopWatch.ElapsedMilliseconds / 1000.0;
         //    //Console.WriteLine("That loop took " + duration + "s");
+
         //}
+
+        //this function is called on new frame from the Parrot. So when debugging using that, edit this function//
+        void _camera_OnNewFrame()
+        {
+
+            System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+            stopWatch.Start();
+
+            //original//
+            Image<Bgr, byte> originalImage = new Image<Bgr, byte>(_camera.GetCurrentBitmap);
+
+            //----------------------------------------
+            Mat HsvImage = new Mat();
+            CvInvoke.CvtColor(originalImage, HsvImage, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
+            //----------------------------------------
+
+            //----------------------------------------
+            Mat thresholdImage = new Mat();
+            CvInvoke.InRange(HsvImage, new ScalarArray(new MCvScalar(iLowH, iLowS, iLowV)), new ScalarArray(new MCvScalar(iHighH, iHighS, iHighV)), thresholdImage);
+            //----------------------------------------
+
+            //----------------------------------------
+            //These are replicated above and made to be adjustable - review this alteration
+            //Size mySize = new Size();
+            //mySize.Width = 5;
+            //mySize.Height = 5;
+            Point myPoint = new Point();
+            myPoint.X = -1;
+            myPoint.Y = -1;
+
+
+            Mat erodeAndDilateEllipse = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Ellipse, mySize, myPoint);
+            Emgu.CV.Structure.MCvScalar erodeAndDilateScalar = new Emgu.CV.Structure.MCvScalar();
+            erodeAndDilateScalar.V0.Equals(1.0);
+            CvInvoke.Erode(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
+            CvInvoke.Erode(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
+
+            CvInvoke.Dilate(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
+            CvInvoke.Dilate(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
+            //----------------------------------------
+
+
+            //----------------------------------------
+            CvInvoke.Moments(thresholdImage);
+            double m10 = CvInvoke.Moments(thresholdImage).M10;
+            double m01 = CvInvoke.Moments(thresholdImage).M01;
+            double mArea = CvInvoke.Moments(thresholdImage).M00;
+
+            //we check if the area is above a certain value otherwise it is probably noise//
+            if (mArea > 10000 && toTrackObject)
+            {
+
+                objectPosX = (int)(m10 / mArea);
+                objectPosY = (int)(m01 / mArea);
+
+                //these are for the drawing of the line
+                Point xAndYPoints = new Point();
+                xAndYPoints.X = objectPosX;
+                xAndYPoints.Y = objectPosY;
+
+
+                //TODO: Change this variable name
+                MCvScalar myColour = new MCvScalar(0, 0, 0);
+
+                //we only draw if the object is on the UAV screen//
+                if (objectLastX >= 0 && objectLastY >= 0 && objectPosX >= 0 && objectPosY >= 0)
+                {
+                    CvInvoke.Line(originalImage, new Point(xAndYPoints.X, xAndYPoints.Y), new Point(objectLastX, objectLastY), myColour, 1);
+
+                    int diameterOfObject = ((int)Math.Sqrt(mArea) / 14);
+
+                    Rectangle myRectangle = new Rectangle(xAndYPoints.X - (diameterOfObject / 2), xAndYPoints.Y - (diameterOfObject / 2), diameterOfObject, diameterOfObject);
+                    originalImage.Draw(myRectangle, new Bgr(Color.Crimson), 1);
+
+                    distanceToObject = (widthOfObject * focalOfLens) / myRectangle.Width;
+
+                    if (toFollowObject)
+                    {
+                        PIDControllerForward(distanceToObject);
+                    }
+
+                }
+                objectLastX = objectPosX;
+                objectLastY = objectPosY;
+            }
+
+            //screenDrawing(originalImage);
+
+            //display the images//
+            thresholdImagePanel.Image = thresholdImage;
+            originalFeedPanel.Image = originalImage;
+
+            //dispose of images//
+            originalImage.Dispose();
+            HsvImage.Dispose();
+            thresholdImage.Dispose();
+            stopWatch.Stop();
+            double duration = stopWatch.ElapsedMilliseconds / 1000.0;
+            //Console.WriteLine("That loop took " + duration + "s");
+        }
 
         private float PIDControllerForward(float distanceToObject)
         {
@@ -514,7 +513,7 @@ namespace Tutorial_31___AR_Drone
 
         private void startEnginesButton_Click(object sender, EventArgs e)
         {
-            //ezB_Connect1.EZB.ARDrone.TakeOff();
+            ezB_Connect1.EZB.ARDrone.TakeOff();
         }
 
         private void emergencyButton_Click(object sender, EventArgs e)
@@ -547,17 +546,15 @@ namespace Tutorial_31___AR_Drone
             System.Threading.Thread.Sleep(moveSleepTime);
 
             ezB_Connect1.EZB.ARDrone.Hover();
-
-            Console.WriteLine("The button was pressed");
         }
 
         private void moveUAVForwardPID(float moveAmount)
         {
-            //ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(0, -moveAmount, 0, 0);
+            ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(0, -moveAmount, 0, 0);
 
-            //System.Threading.Thread.Sleep(moveSleepTime);
+            System.Threading.Thread.Sleep(moveSleepTime);
 
-            //ezB_Connect1.EZB.ARDrone.Hover();
+            ezB_Connect1.EZB.ARDrone.Hover();
 
             Console.WriteLine("Moving towards the target");
         }
@@ -634,7 +631,7 @@ namespace Tutorial_31___AR_Drone
 
         private void hoverButton_Click(object sender, EventArgs e)
         {
-            //ezB_Connect1.EZB.ARDrone.Hover();
+            ezB_Connect1.EZB.ARDrone.Hover();
         }
 
         private void landButton_Click(object sender, EventArgs e)
