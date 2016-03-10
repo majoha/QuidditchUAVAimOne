@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2012 for Windows Desktop
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutorial 31 - AR Drone", "Tutorial 31 - AR Drone.csproj", "{26B5C384-B622-43C8-BD08-2501864A3D53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QPUAVControlPanel", "QPUAVControlPanel.csproj", "{26B5C384-B622-43C8-BD08-2501864A3D53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
