@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Tutorial_31___AR_Drone</RootNamespace>
-    <AssemblyName>Tutorial 31 - AR Drone</AssemblyName>
+    <AssemblyName>QPUAVControlPanel</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

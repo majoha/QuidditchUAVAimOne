@@ -78,7 +78,7 @@ namespace Tutorial_31___AR_Drone
             {
 
                 string title = "New version available!";
-                string question = "Would you like to download?";
+                string question = ("Would you like to download?" + "\r\n\r\n Current version: " + curVersion + "\r\n New version: " + newVersion);
 
                 if (DialogResult.Yes == MessageBox.Show(question, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                 {

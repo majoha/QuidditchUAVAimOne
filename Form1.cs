@@ -44,6 +44,12 @@ namespace Tutorial_31___AR_Drone
 
         private float distanceToObject = 0;//mm
         private int widthOfObject = 52;//mm
+        /*These are the widths of objects used while developing
+         * 
+         * - Pledge container lid = 52mm
+         * - orange hockey ball = 65mm
+         * 
+         */
         private int focalOfLens = 203;//mm
         /*These are a list of focal lengths which depend on the debugging method i.e. webcam or Parrot
          *
@@ -66,8 +72,7 @@ namespace Tutorial_31___AR_Drone
         private float lastErrorX = 0.0f;
         private float iCumErrorX = 0.0f;
         private float errorX = 0.0f;
-        private float tempErrorX = 0.0f;
-        private float setPointX = 600.0f;
+        private float setPointX = 600.0f;//mm
         //PIDControllerXVariables//
 
         //to check
@@ -537,6 +542,8 @@ namespace Tutorial_31___AR_Drone
             System.Threading.Thread.Sleep(moveSleepTime);
 
             ezB_Connect1.EZB.ARDrone.Hover();
+
+            Console.WriteLine("The button was pressed");
         }
 
         private void moveUAVBackward_Click(object sender, EventArgs e)
