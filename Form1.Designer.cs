@@ -741,7 +741,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1284, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1321, 24);
             this.menuStrip1.TabIndex = 74;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -785,6 +785,7 @@
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "&Help";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // checkForUpdatesToolStripMenuItem
             // 
@@ -809,28 +810,30 @@
             // 
             // moveUAVUp
             // 
-            this.moveUAVUp.Location = new System.Drawing.Point(437, 483);
+            this.moveUAVUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moveUAVUp.Location = new System.Drawing.Point(447, 459);
             this.moveUAVUp.Name = "moveUAVUp";
-            this.moveUAVUp.Size = new System.Drawing.Size(75, 23);
+            this.moveUAVUp.Size = new System.Drawing.Size(48, 49);
             this.moveUAVUp.TabIndex = 75;
-            this.moveUAVUp.Text = "Up";
+            this.moveUAVUp.Text = "↥";
             this.moveUAVUp.UseVisualStyleBackColor = true;
             this.moveUAVUp.Click += new System.EventHandler(this.moveUAVUp_Click);
             // 
             // moveUAVDown
             // 
-            this.moveUAVDown.Location = new System.Drawing.Point(437, 566);
+            this.moveUAVDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moveUAVDown.Location = new System.Drawing.Point(447, 512);
             this.moveUAVDown.Name = "moveUAVDown";
-            this.moveUAVDown.Size = new System.Drawing.Size(75, 23);
+            this.moveUAVDown.Size = new System.Drawing.Size(48, 48);
             this.moveUAVDown.TabIndex = 76;
-            this.moveUAVDown.Text = "Down";
+            this.moveUAVDown.Text = "↧";
             this.moveUAVDown.UseVisualStyleBackColor = true;
             this.moveUAVDown.Click += new System.EventHandler(this.moveUAVDown_Click);
             // 
             // moveUAVForward
             // 
             this.moveUAVForward.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.moveUAVForward.Location = new System.Drawing.Point(329, 457);
+            this.moveUAVForward.Location = new System.Drawing.Point(339, 458);
             this.moveUAVForward.Name = "moveUAVForward";
             this.moveUAVForward.Size = new System.Drawing.Size(48, 49);
             this.moveUAVForward.TabIndex = 77;
@@ -841,7 +844,7 @@
             // moveUAVBackward
             // 
             this.moveUAVBackward.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.moveUAVBackward.Location = new System.Drawing.Point(329, 566);
+            this.moveUAVBackward.Location = new System.Drawing.Point(339, 512);
             this.moveUAVBackward.Name = "moveUAVBackward";
             this.moveUAVBackward.Size = new System.Drawing.Size(48, 49);
             this.moveUAVBackward.TabIndex = 78;
@@ -852,7 +855,7 @@
             // moveUAVLeftRoll
             // 
             this.moveUAVLeftRoll.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.moveUAVLeftRoll.Location = new System.Drawing.Point(275, 511);
+            this.moveUAVLeftRoll.Location = new System.Drawing.Point(285, 512);
             this.moveUAVLeftRoll.Name = "moveUAVLeftRoll";
             this.moveUAVLeftRoll.Size = new System.Drawing.Size(48, 49);
             this.moveUAVLeftRoll.TabIndex = 79;
@@ -863,9 +866,9 @@
             // moveUAVRightRoll
             // 
             this.moveUAVRightRoll.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.moveUAVRightRoll.Location = new System.Drawing.Point(383, 513);
+            this.moveUAVRightRoll.Location = new System.Drawing.Point(393, 512);
             this.moveUAVRightRoll.Name = "moveUAVRightRoll";
-            this.moveUAVRightRoll.Size = new System.Drawing.Size(48, 47);
+            this.moveUAVRightRoll.Size = new System.Drawing.Size(48, 49);
             this.moveUAVRightRoll.TabIndex = 80;
             this.moveUAVRightRoll.Text = "→";
             this.moveUAVRightRoll.UseVisualStyleBackColor = true;
@@ -874,7 +877,7 @@
             // moveUAVAnticlockwiseYaw
             // 
             this.moveUAVAnticlockwiseYaw.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.moveUAVAnticlockwiseYaw.Location = new System.Drawing.Point(275, 457);
+            this.moveUAVAnticlockwiseYaw.Location = new System.Drawing.Point(285, 458);
             this.moveUAVAnticlockwiseYaw.Name = "moveUAVAnticlockwiseYaw";
             this.moveUAVAnticlockwiseYaw.Size = new System.Drawing.Size(48, 49);
             this.moveUAVAnticlockwiseYaw.TabIndex = 81;
@@ -885,7 +888,7 @@
             // moveUAVClockwiseYaw
             // 
             this.moveUAVClockwiseYaw.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.moveUAVClockwiseYaw.Location = new System.Drawing.Point(383, 457);
+            this.moveUAVClockwiseYaw.Location = new System.Drawing.Point(393, 459);
             this.moveUAVClockwiseYaw.Name = "moveUAVClockwiseYaw";
             this.moveUAVClockwiseYaw.Size = new System.Drawing.Size(48, 49);
             this.moveUAVClockwiseYaw.TabIndex = 82;
@@ -898,7 +901,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1284, 685);
+            this.ClientSize = new System.Drawing.Size(1321, 685);
             this.Controls.Add(this.moveUAVClockwiseYaw);
             this.Controls.Add(this.moveUAVAnticlockwiseYaw);
             this.Controls.Add(this.moveUAVRightRoll);

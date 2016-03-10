@@ -18,33 +18,38 @@ namespace Tutorial_31___AR_Drone
         private Timer m_NonUrgentTimer;
         private Timer m_SemiUrgentTimer;
 
+        //for parrot//
         private Camera _camera;
+
+        //for webcam//
+        //private Capture capture;
 
         //variables which dictate the speed at which the UAV will move when changing direction//
         float moveSensitivivivity = 0.20f;
-        int moveSleepTime         = 400;
+        int moveSleepTime = 400;
 
         //this tracks for a blue object
-        private int iLowH  = 82;
+        private int iLowH = 82;
         private int iHighH = 179;
-        private int iLowS  = 100;
+        private int iLowS = 100;
         private int iHighS = 100;
-        private int iLowV  = 60;
+        private int iLowV = 60;
         private int iHighV = 100;
 
         //Snitch Variables//
-        private int objectPosX  = 0;
-        private int objectPosY  = 0;
+        private int objectPosX = 0;
+        private int objectPosY = 0;
         private int objectLastX = 0;
         private int objectLastY = 0;
 
         private float distanceToObject = 0;//mm
-        private int widthOfObject      = 52;//mm
-        private int focalOfLens        = 203;//mm
+        private int widthOfObject = 52;//mm
+        private int focalOfLens = 203;//mm
         /*These are a list of focal lengths which depend on the debugging method i.e. webcam or Parrot
-         *focal lengths;
+         *
          * - webcam = ~469mm //~770
          * - ARParrot = ~203mm //previous values 210, 234
+         * 
          */
         //Snitch Variables//
 
@@ -57,12 +62,12 @@ namespace Tutorial_31___AR_Drone
         private float iCorrectionX = 0.0f;
         private float dCorrectionX = 0.0f;
 
-        private float slopeX     = 0.0f;
+        private float slopeX = 0.0f;
         private float lastErrorX = 0.0f;
         private float iCumErrorX = 0.0f;
-        private float errorX     = 0.0f;
+        private float errorX = 0.0f;
         private float tempErrorX = 0.0f;
-        private float setPointX  = 600.0f;
+        private float setPointX = 600.0f;
         //PIDControllerXVariables//
 
         //to check
@@ -70,10 +75,6 @@ namespace Tutorial_31___AR_Drone
         private bool toTrackObject = false;
         private bool toFollowObject = false;
         private bool toPredictObject = false;
-
-        //for webcam//
-        //Capture capture;
-        //for webcam//
 
         public Form1()
         {
@@ -181,8 +182,7 @@ namespace Tutorial_31___AR_Drone
                 toTrackObject = false;
                 toTrackTrackBar.BackColor = Color.Red;
                 this.isTrackingLabel.Text = "Not Tracking";
-            }
-            else if (toTrackTrackBar.Value == 1)
+            } else if (toTrackTrackBar.Value == 1)
             {
                 toTrackObject = true;
                 toTrackTrackBar.BackColor = Color.Green;
@@ -193,8 +193,7 @@ namespace Tutorial_31___AR_Drone
                 toFollowObject = false;
                 toFollowTrackBar.BackColor = Color.Red;
                 this.isfollowingLabel.Text = "Not Following";
-            }
-            else if (toFollowTrackBar.Value == 1 && toTrackTrackBar.Value == 1)
+            } else if (toFollowTrackBar.Value == 1 && toTrackTrackBar.Value == 1)
             {
                 toFollowObject = true;
                 toFollowTrackBar.BackColor = Color.Green;
@@ -205,8 +204,7 @@ namespace Tutorial_31___AR_Drone
                 toPredictObject = false;
                 toPredictTrackBar.BackColor = Color.Red;
                 this.isPredictingLabel.Text = "Not Predicting";
-            }
-            else if (toPredictTrackBar.Value == 1 && toTrackTrackBar.Value == 1)
+            } else if (toPredictTrackBar.Value == 1 && toTrackTrackBar.Value == 1)
             {
                 toPredictObject = true;
                 toPredictTrackBar.BackColor = Color.Green;
@@ -516,12 +514,20 @@ namespace Tutorial_31___AR_Drone
 
         private void moveUAVUp_Click(object sender, EventArgs e)
         {
+            ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(0, 0, moveSensitivivivity, 0);
 
+            System.Threading.Thread.Sleep(moveSleepTime);
+
+            ezB_Connect1.EZB.ARDrone.Hover();
         }
 
         private void moveUAVDown_Click(object sender, EventArgs e)
         {
+            ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(0, 0, -moveSensitivivivity, 0);
 
+            System.Threading.Thread.Sleep(moveSleepTime);
+
+            ezB_Connect1.EZB.ARDrone.Hover();
         }
 
         private void moveUAVForward_Click(object sender, EventArgs e)
@@ -544,22 +550,40 @@ namespace Tutorial_31___AR_Drone
 
         private void moveUAVLeftRoll_Click(object sender, EventArgs e)
         {
+            ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(-moveSensitivivivity, 0, 0, 0);
+
+            System.Threading.Thread.Sleep(moveSleepTime);
+
+            ezB_Connect1.EZB.ARDrone.Hover();
 
         }
 
         private void moveUAVRightRoll_Click(object sender, EventArgs e)
         {
+            ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(moveSensitivivivity, 0, 0, 0);
+
+            System.Threading.Thread.Sleep(moveSleepTime);
+
+            ezB_Connect1.EZB.ARDrone.Hover();
 
         }
 
         private void moveUAVAnticlockwiseYaw_Click(object sender, EventArgs e)
         {
+            ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(0, 0, 0, -moveSensitivivivity);
 
+            System.Threading.Thread.Sleep(moveSleepTime);
+
+            ezB_Connect1.EZB.ARDrone.Hover();
         }
 
         private void moveUAVClockwiseYaw_Click(object sender, EventArgs e)
         {
+            ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(0, 0, 0, moveSensitivivivity);
 
+            System.Threading.Thread.Sleep(moveSleepTime);
+
+            ezB_Connect1.EZB.ARDrone.Hover();
         }
 
         private void startVideoButton_Click(object sender, EventArgs e)
@@ -611,16 +635,6 @@ namespace Tutorial_31___AR_Drone
         }
 
         private void thresholdImageDisplay_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
         }
@@ -798,6 +812,11 @@ namespace Tutorial_31___AR_Drone
 
 
             Application.Restart();
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
