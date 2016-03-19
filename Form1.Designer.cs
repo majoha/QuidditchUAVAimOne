@@ -170,7 +170,7 @@
             // emergencyButton
             // 
             this.emergencyButton.BackColor = System.Drawing.Color.Red;
-            this.emergencyButton.Location = new System.Drawing.Point(93, 223);
+            this.emergencyButton.Location = new System.Drawing.Point(393, 570);
             this.emergencyButton.Name = "emergencyButton";
             this.emergencyButton.Size = new System.Drawing.Size(75, 23);
             this.emergencyButton.TabIndex = 7;
@@ -223,7 +223,7 @@
             // 
             // landButton
             // 
-            this.landButton.Location = new System.Drawing.Point(93, 198);
+            this.landButton.Location = new System.Drawing.Point(312, 570);
             this.landButton.Name = "landButton";
             this.landButton.Size = new System.Drawing.Size(75, 23);
             this.landButton.TabIndex = 29;

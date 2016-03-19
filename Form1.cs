@@ -62,8 +62,8 @@ namespace Tutorial_31___AR_Drone
 
         //PIDControllerXVariables//
         private float pGain = 0.50f;
-        private float iGain = 0.50f;
-        private float dGain = 0.50f;
+        private float iGain = 0.00f;
+        private float dGain = 0.00f;
 
         private float pCorrectionX = 0.0f;
         private float iCorrectionX = 0.0f;
@@ -75,8 +75,8 @@ namespace Tutorial_31___AR_Drone
         private float errorX = 0.0f;
         private float setPointX = 300.0f;//mm
 
-        private float maxCorrectionX = 0.20f;
-        private float minCorrectionX = -0.20f;
+        private float maxCorrectionX = 0.05f;
+        private float minCorrectionX = -0.05f;
         //PIDControllerXVariables//
 
         //to check
@@ -84,6 +84,8 @@ namespace Tutorial_31___AR_Drone
         private bool toTrackObject = false;
         private bool toFollowObject = false;
         private bool toPredictObject = false;
+
+        int temp = 1;
 
         public Form1()
         {
@@ -191,7 +193,8 @@ namespace Tutorial_31___AR_Drone
                 toTrackObject = false;
                 toTrackTrackBar.BackColor = Color.Red;
                 this.isTrackingLabel.Text = "Not Tracking";
-            } else if (toTrackTrackBar.Value == 1)
+            }
+            else if (toTrackTrackBar.Value == 1)
             {
                 toTrackObject = true;
                 toTrackTrackBar.BackColor = Color.Green;
@@ -202,7 +205,8 @@ namespace Tutorial_31___AR_Drone
                 toFollowObject = false;
                 toFollowTrackBar.BackColor = Color.Red;
                 this.isfollowingLabel.Text = "Not Following";
-            } else if (toFollowTrackBar.Value == 1 && toTrackTrackBar.Value == 1)
+            }
+            else if (toFollowTrackBar.Value == 1 && toTrackTrackBar.Value == 1)
             {
                 toFollowObject = true;
                 toFollowTrackBar.BackColor = Color.Green;
@@ -213,7 +217,8 @@ namespace Tutorial_31___AR_Drone
                 toPredictObject = false;
                 toPredictTrackBar.BackColor = Color.Red;
                 this.isPredictingLabel.Text = "Not Predicting";
-            } else if (toPredictTrackBar.Value == 1 && toTrackTrackBar.Value == 1)
+            }
+            else if (toPredictTrackBar.Value == 1 && toTrackTrackBar.Value == 1)
             {
                 toPredictObject = true;
                 toPredictTrackBar.BackColor = Color.Green;
@@ -337,9 +342,6 @@ namespace Tutorial_31___AR_Drone
         void _camera_OnNewFrame()
         {
 
-            System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
-            //stopWatch.Start();
-
             //original//
             Image<Bgr, byte> originalImage = new Image<Bgr, byte>(_camera.GetCurrentBitmap);
 
@@ -354,18 +356,13 @@ namespace Tutorial_31___AR_Drone
             //----------------------------------------
 
             //----------------------------------------
-            //These are replicated above and made to be adjustable - review this alteration
-            //Size mySize = new Size();
-            //mySize.Width = 5;
-            //mySize.Height = 5;
+
             Point myPoint = new Point();
             myPoint.X = -1;
             myPoint.Y = -1;
 
-
             Mat erodeAndDilateEllipse = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Ellipse, mySize, myPoint);
             Emgu.CV.Structure.MCvScalar erodeAndDilateScalar = new Emgu.CV.Structure.MCvScalar();
-            erodeAndDilateScalar.V0.Equals(1.0);
             CvInvoke.Erode(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
             //CvInvoke.Erode(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
 
@@ -381,7 +378,7 @@ namespace Tutorial_31___AR_Drone
             double mArea = CvInvoke.Moments(thresholdImage).M00;
 
             //we check if the area is above a certain value otherwise it is probably noise//
-            if (mArea >= 30000 && toTrackObject)
+            if (mArea >= 20000 && toTrackObject)
             {
 
                 objectPosX = (int)(m10 / mArea);
@@ -391,7 +388,6 @@ namespace Tutorial_31___AR_Drone
                 Point xAndYPoints = new Point();
                 xAndYPoints.X = objectPosX;
                 xAndYPoints.Y = objectPosY;
-
 
                 //TODO: Change this variable name
                 MCvScalar myColour = new MCvScalar(0, 0, 0);
@@ -406,11 +402,14 @@ namespace Tutorial_31___AR_Drone
                     Rectangle myRectangle = new Rectangle(xAndYPoints.X - (diameterOfObject / 2), xAndYPoints.Y - (diameterOfObject / 2), diameterOfObject, diameterOfObject);
                     originalImage.Draw(myRectangle, new Bgr(Color.Crimson), 1);
 
-                    distanceToObject = (widthOfObject * focalOfLens) / myRectangle.Width;
-
-                    if (toFollowObject)
+                    if (myRectangle.Width > 0.0f)
                     {
-                        moveUAVForwardPID(PIDControllerForward(distanceToObject));
+                        distanceToObject = (widthOfObject * focalOfLens) / myRectangle.Width;
+
+                        if (toFollowObject)
+                        {
+                            moveUAVForwardPID(PIDControllerForward(distanceToObject));
+                        }
                     }
 
                 }
@@ -428,38 +427,48 @@ namespace Tutorial_31___AR_Drone
             originalImage.Dispose();
             HsvImage.Dispose();
             thresholdImage.Dispose();
-
-            //stopWatch.Stop();
-            //double duration = stopWatch.ElapsedMilliseconds / 1000.0;
-            //Console.WriteLine("That loop took " + duration + "s");
         }
 
         private float PIDControllerForward(float distanceToObject)
         {
             //proportional
-            errorX = setPointX - distanceToObject;
+            errorX = distanceToObject - setPointX;
             pCorrectionX = pGain * errorX;
 
             //integral
-            iCumErrorX += errorX;
+            if (temp <= 5)
+            {
+
+                iCumErrorX += errorX;
+                iCumErrorX /= temp;
+                temp++;
+
+            }
+            else
+            {
+
+                temp = 1;
+            }
+
             iCorrectionX = iGain * iCumErrorX;
 
             //derivative
             slopeX = errorX - lastErrorX;
             dCorrectionX = dGain * slopeX;
-            
+
             lastErrorX = errorX;
 
             float xCorrection = (pCorrectionX + iCorrectionX + dCorrectionX);
             //scale the value to fit within the wanted moveSensitivity
             Console.WriteLine("The value of xCorrection is " + xCorrection);
-            xCorrection /= 10000.0f;
+            xCorrection /= 1000.0f;
 
             if (xCorrection > maxCorrectionX)
             {
                 xCorrection = maxCorrectionX;
             }
-            if (xCorrection < minCorrectionX) {
+            if (xCorrection < minCorrectionX)
+            {
 
                 xCorrection = minCorrectionX;
             }
@@ -530,7 +539,7 @@ namespace Tutorial_31___AR_Drone
 
         private void startEnginesButton_Click(object sender, EventArgs e)
         {
-            ezB_Connect1.EZB.ARDrone.TakeOff();
+            //ezB_Connect1.EZB.ARDrone.TakeOff();
         }
 
         private void emergencyButton_Click(object sender, EventArgs e)
@@ -567,11 +576,11 @@ namespace Tutorial_31___AR_Drone
 
         private void moveUAVForwardPID(float moveAmount)
         {
-            //ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(0, -moveAmount, 0, 0);
+            //ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(0, -(moveAmount), 0, 0);
 
             //System.Threading.Thread.Sleep(moveSleepTime);
 
-            //ezB_Connect1.EZB.ARDrone.Hover();
+            ezB_Connect1.EZB.ARDrone.Hover();
 
             Console.WriteLine("Moving towards the target at a rate of " + moveAmount);
         }
@@ -642,13 +651,12 @@ namespace Tutorial_31___AR_Drone
 
         private void flatTrimButton_Click(object sender, EventArgs e)
         {
-
             ezB_Connect1.EZB.ARDrone.SetFlatTrim();
         }
 
         private void hoverButton_Click(object sender, EventArgs e)
         {
-            ezB_Connect1.EZB.ARDrone.Hover();
+            //ezB_Connect1.EZB.ARDrone.Hover();
         }
 
         private void landButton_Click(object sender, EventArgs e)
@@ -850,5 +858,6 @@ namespace Tutorial_31___AR_Drone
         {
 
         }
+
     }
 }
