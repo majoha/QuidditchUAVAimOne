@@ -60,32 +60,74 @@ namespace Tutorial_31___AR_Drone
          */
         //Snitch Variables//
 
-        //PIDControllerXVariables//
-        private float pGain = 0.50f;
-        private float iGain = 0.00f;
-        private float dGain = 0.00f;
+        //PIDControllerPitchVariables//
+        private float pPitchGain = 0.50f;
+        private float iPitchGain = 0.50f;
+        private float dPitchGain = 0.00f;
 
-        private float pCorrectionX = 0.0f;
-        private float iCorrectionX = 0.0f;
-        private float dCorrectionX = 0.0f;
+        private float pPitchCorrectionX = 0.0f;
+        private float iPitchCorrectionX = 0.0f;
+        private float dPitchCorrectionX = 0.0f;
 
-        private float slopeX = 0.0f;
-        private float lastErrorX = 0.0f;
-        private float iCumErrorX = 0.0f;
-        private float errorX = 0.0f;
-        private float setPointX = 300.0f;//mm
+        private float slopePitchX = 0.0f;
+        private float lastErrorPitchX = 0.0f;
+        private float iCumErrorPitchX = 0.0f;
+        private float errorPitchX = 0.0f;
+        private float setPointPitchX = 500.0f;//mm
 
-        private float maxCorrectionX = 0.05f;
-        private float minCorrectionX = -0.05f;
-        //PIDControllerXVariables//
+        private float maxPitchCorrectionX = 0.05f;
+        private float minPitchCorrectionX = -0.05f;
+        //PIDControllerPitchVariables//
+
+        //PIDControllerYawVariables//
+        private float pYawGain = 0.50f;
+        private float iYawGain = 0.50f;
+        private float dYawGain = 0.00f;
+
+        private float pYawCorrection = 0.0f;
+        private float iYawCorrection = 0.0f;
+        private float dYawCorrection = 0.0f;
+
+        private float slopeYaw = 0.0f;
+        private float lastErrorYaw = 0.0f;
+        private float iCumErrorYaw = 0.0f;
+        private float errorYaw = 0.0f;
+        private float setPointYaw = 160.0f;//mm
+
+        private float maxYawCorrection = 0.20f;
+        private float minYawCorrection = -0.20f;
+        //PIDControllerRollVariables//
+
+        //PIDControllerAscend/DescendVariables//
+        private float pADGain = 0.50f;
+        private float iADGain = 0.50f;
+        private float dADGain = 0.00f;
+
+        private float pADCorrection = 0.0f;
+        private float iADCorrection = 0.0f;
+        private float dADCorrection = 0.0f;
+
+        private float slopeAD = 0.0f;
+        private float lastErrorAD = 0.0f;
+        private float iCumErrorAD = 0.0f;
+        private float errorAD = 0.0f;
+        private float setPointAD = 120.0f;//mm
+
+        private float maxADCorrection = 0.20f;
+        private float minADCorrection = -0.20f;
+        //PIDControllerAscend/DescendVariables//
 
         //to check
         Size mySize = new Size();
         private bool toTrackObject = false;
         private bool toFollowObject = false;
         private bool toPredictObject = false;
+        int frame = 0;
 
-        int temp = 1;
+        int pitchAverage = 1;
+        int yawAverage = 1;
+        int ADAverage = 1;
+        byte averageCount = 6;
 
         public Form1()
         {
@@ -392,6 +434,10 @@ namespace Tutorial_31___AR_Drone
                 //TODO: Change this variable name
                 MCvScalar myColour = new MCvScalar(0, 0, 0);
 
+                CvInvoke.Line(originalImage, new Point(160, 0), new Point(160, 240), myColour, 1);
+                CvInvoke.Line(originalImage, new Point(0, 120), new Point(340, 120), myColour, 1);
+
+
                 //we only draw if the object is on the UAV screen//
                 if (objectLastX >= 0 && objectLastY >= 0 && objectPosX >= 0 && objectPosY >= 0)
                 {
@@ -408,7 +454,7 @@ namespace Tutorial_31___AR_Drone
 
                         if (toFollowObject)
                         {
-                            moveUAVForwardPID(PIDControllerForward(distanceToObject));
+                            PIDController(distanceToObject, xAndYPoints);
                         }
                     }
 
@@ -429,51 +475,147 @@ namespace Tutorial_31___AR_Drone
             thresholdImage.Dispose();
         }
 
-        private float PIDControllerForward(float distanceToObject)
+        private void PIDController(float distanceToObject, Point xAndYPoints)
         {
+            ///////////
+            //toPitch//
+            ///////////
             //proportional
-            errorX = distanceToObject - setPointX;
-            pCorrectionX = pGain * errorX;
+            errorPitchX = distanceToObject - setPointPitchX;
+            pPitchCorrectionX = pPitchGain * errorPitchX;
 
             //integral
-            if (temp <= 5)
+            if (pitchAverage <= averageCount)
             {
-
-                iCumErrorX += errorX;
-                iCumErrorX /= temp;
-                temp++;
-
+                iCumErrorPitchX += errorPitchX;
+                iCumErrorPitchX /= pitchAverage;
+                pitchAverage++;
             }
             else
             {
-
-                temp = 1;
+                pitchAverage = 1;
             }
-
-            iCorrectionX = iGain * iCumErrorX;
+            iPitchCorrectionX = iPitchGain * iCumErrorPitchX;
 
             //derivative
-            slopeX = errorX - lastErrorX;
-            dCorrectionX = dGain * slopeX;
+            slopePitchX = errorPitchX - lastErrorPitchX;
+            dPitchCorrectionX = dPitchGain * slopePitchX;
 
-            lastErrorX = errorX;
+            lastErrorPitchX = errorPitchX;
 
-            float xCorrection = (pCorrectionX + iCorrectionX + dCorrectionX);
+            float pitchCorrection = (pPitchCorrectionX + iPitchCorrectionX + dPitchCorrectionX);
             //scale the value to fit within the wanted moveSensitivity
-            Console.WriteLine("The value of xCorrection is " + xCorrection);
-            xCorrection /= 1000.0f;
+            Console.WriteLine("Frame " + frame++ + " " + pitchCorrection);
+            pitchCorrection /= 1000.0f;
 
-            if (xCorrection > maxCorrectionX)
+            if (pitchCorrection > maxPitchCorrectionX)
             {
-                xCorrection = maxCorrectionX;
+                pitchCorrection = maxPitchCorrectionX;
             }
-            if (xCorrection < minCorrectionX)
+            if (pitchCorrection < minPitchCorrectionX)
             {
-
-                xCorrection = minCorrectionX;
+                pitchCorrection = minPitchCorrectionX;
             }
+            ///////////
+            //toPitch//
+            ///////////
 
-            return xCorrection;
+            //////////
+            //toRoll//
+            //////////
+            //proportional
+            errorYaw = xAndYPoints.X - setPointYaw;
+            pYawCorrection = pYawGain * errorYaw;
+
+            //integral
+
+            //integral
+            if (pitchAverage <= averageCount)
+            {
+                iCumErrorYaw += errorYaw;
+                iCumErrorYaw /= yawAverage;
+                yawAverage++;
+            }
+            else
+            {
+                yawAverage = 1;
+            }
+            iYawCorrection = iYawGain * iCumErrorYaw;
+
+            //derivative
+            slopeYaw = errorYaw - lastErrorYaw;
+            dYawCorrection = dYawGain * slopeYaw;
+
+            lastErrorYaw = errorYaw;
+
+            float rollCorrection = (pYawCorrection + iYawCorrection + dYawCorrection);
+            //scale the value to fit within the wanted moveSensitivity
+
+            rollCorrection /= 100.0f;//1000.0f;
+
+            //bound the correct value
+            if (rollCorrection > maxYawCorrection)
+            {
+                rollCorrection = maxYawCorrection;
+            }
+            if (rollCorrection < minYawCorrection)
+            {
+                rollCorrection = minYawCorrection;                           
+            }
+            //////////
+            //toRoll//
+            //////////
+
+            //////////////////
+            //ascend/descend//
+            //////////////////
+            errorAD = xAndYPoints.Y - setPointAD;
+            pADCorrection = pADGain * errorAD;
+
+            //integral
+            if (ADAverage <= averageCount)
+            {
+                iCumErrorAD += errorAD;
+                iCumErrorAD /= ADAverage;
+                ADAverage++;
+            }
+            else
+            {
+                ADAverage = 1;
+            }
+            iADCorrection = iADGain * iCumErrorAD;
+
+            //derivative
+            slopeAD = errorAD - lastErrorAD;
+            dADCorrection = dADGain * slopeAD;
+
+            lastErrorAD = errorAD;
+
+            float adCorrection = (pADCorrection + iADCorrection + dADCorrection);
+
+            //scale the value to fit within the wanted moveSensitivity
+            adCorrection /= 100.0f;//1000.0f;
+
+            if (adCorrection > maxADCorrection)
+            {
+                adCorrection = maxADCorrection;
+            }
+            if (adCorrection < minADCorrection)
+            {
+                adCorrection = minADCorrection;
+            }
+            //////////////////
+            //ascend/descend//
+            //////////////////
+
+
+            //initiate moves//
+            ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(0, -(pitchCorrection), -(adCorrection), (rollCorrection));
+            Console.WriteLine("Iteration " + frame + " " + "pitch: " + pitchCorrection + " " + "adCorrection" + adCorrection + " " + "rollCorrection" + rollCorrection);
+            System.Threading.Thread.Sleep(moveSleepTime);
+
+            ezB_Connect1.EZB.ARDrone.Hover();
+            //initiate moves//
         }
 
         private void setDefaultThresholdValues()
@@ -539,7 +681,7 @@ namespace Tutorial_31___AR_Drone
 
         private void startEnginesButton_Click(object sender, EventArgs e)
         {
-            //ezB_Connect1.EZB.ARDrone.TakeOff();
+            ezB_Connect1.EZB.ARDrone.TakeOff();
         }
 
         private void emergencyButton_Click(object sender, EventArgs e)
@@ -572,17 +714,6 @@ namespace Tutorial_31___AR_Drone
             System.Threading.Thread.Sleep(moveSleepTime);
 
             ezB_Connect1.EZB.ARDrone.Hover();
-        }
-
-        private void moveUAVForwardPID(float moveAmount)
-        {
-            //ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(0, -(moveAmount), 0, 0);
-
-            //System.Threading.Thread.Sleep(moveSleepTime);
-
-            ezB_Connect1.EZB.ARDrone.Hover();
-
-            Console.WriteLine("Moving towards the target at a rate of " + moveAmount);
         }
 
         private void moveUAVBackward_Click(object sender, EventArgs e)
@@ -679,11 +810,6 @@ namespace Tutorial_31___AR_Drone
             cbDroneVersion.SelectedIndex = 0;
         }
 
-        private void thresholdImageDisplay_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void label1_Click(object sender, EventArgs e)
         {
             ToolTip tt = new ToolTip();
@@ -773,11 +899,6 @@ namespace Tutorial_31___AR_Drone
         private void resetThresholdValues_Click(object sender, EventArgs e)
         {
             setDefaultThresholdValues();
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
 
         private void currentAltitudeTextbox_TextChanged(object sender, EventArgs e)

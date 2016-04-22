@@ -273,7 +273,6 @@
             this.thresholdImagePanel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.thresholdImagePanel.TabIndex = 2;
             this.thresholdImagePanel.TabStop = false;
-            this.thresholdImagePanel.Click += new System.EventHandler(this.thresholdImageDisplay_Click);
             // 
             // HueLowNumericUpDown
             // 
