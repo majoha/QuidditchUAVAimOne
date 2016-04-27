@@ -61,7 +61,7 @@ namespace Tutorial_31___AR_Drone
         //Snitch Variables//
 
         //PIDControllerPitchVariables//
-        private float pPitchGain = 0.50f;
+        private float pPitchGain = 0.50f;//0.50f;
         private float iPitchGain = 0.50f;
         private float dPitchGain = 0.00f;
 
@@ -80,8 +80,8 @@ namespace Tutorial_31___AR_Drone
         //PIDControllerPitchVariables//
 
         //PIDControllerYawVariables//
-        private float pYawGain = 0.50f;
-        private float iYawGain = 0.50f;
+        private float pYawGain = 0.50f;//0.20f;
+        private float iYawGain = 0.50f;//0.50f;
         private float dYawGain = 0.00f;
 
         private float pYawCorrection = 0.0f;
@@ -99,8 +99,8 @@ namespace Tutorial_31___AR_Drone
         //PIDControllerRollVariables//
 
         //PIDControllerAscend/DescendVariables//
-        private float pADGain = 0.50f;
-        private float iADGain = 0.50f;
+        private float pADGain = 0.50f;//0.20f;
+        private float iADGain = 0.50f;//0.50f;
         private float dADGain = 0.00f;
 
         private float pADCorrection = 0.0f;
@@ -505,7 +505,7 @@ namespace Tutorial_31___AR_Drone
 
             float pitchCorrection = (pPitchCorrectionX + iPitchCorrectionX + dPitchCorrectionX);
             //scale the value to fit within the wanted moveSensitivity
-            Console.WriteLine("Frame " + frame++ + " " + pitchCorrection);
+            Console.WriteLine("Frame " + frame++ + " " + errorYaw);
             pitchCorrection /= 1000.0f;
 
             if (pitchCorrection > maxPitchCorrectionX)
@@ -560,7 +560,7 @@ namespace Tutorial_31___AR_Drone
             }
             if (rollCorrection < minYawCorrection)
             {
-                rollCorrection = minYawCorrection;                           
+                rollCorrection = minYawCorrection;
             }
             //////////
             //toRoll//
@@ -611,7 +611,6 @@ namespace Tutorial_31___AR_Drone
 
             //initiate moves//
             ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(0, -(pitchCorrection), -(adCorrection), (rollCorrection));
-            Console.WriteLine("Iteration " + frame + " " + "pitch: " + pitchCorrection + " " + "adCorrection" + adCorrection + " " + "rollCorrection" + rollCorrection);
             System.Threading.Thread.Sleep(moveSleepTime);
 
             ezB_Connect1.EZB.ARDrone.Hover();
