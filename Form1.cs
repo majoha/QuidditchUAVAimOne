@@ -389,7 +389,7 @@ namespace Tutorial_31___AR_Drone
             //scale the value to fit within the wanted moveSensitivity
             Console.WriteLine("Frame " + frame++ + " " + errorYaw);
             pitchCorrection /= 1000.0f;
-
+            
             if (pitchCorrection > maxPitchCorrectionX)
             {
                 pitchCorrection = maxPitchCorrectionX;
