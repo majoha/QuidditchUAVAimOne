@@ -226,6 +226,7 @@ namespace Tutorial_31___AR_Drone
             if (toTrackTrackBar.Value == 0)
             {
                 toTrackObject = false;
+                toFollowObject = false;
                 toTrackTrackBar.BackColor = Color.Red;
                 this.isTrackingLabel.Text = "Not Tracking";
             }
@@ -249,15 +250,10 @@ namespace Tutorial_31___AR_Drone
             }
             if (toPredictTrackBar.Value == 0 || toTrackTrackBar.Value == 0)
             {
-                toPredictObject = false;
-                toPredictTrackBar.BackColor = Color.Red;
-                this.isPredictingLabel.Text = "Not Predicting";
+
             }
             else if (toPredictTrackBar.Value == 1 && toTrackTrackBar.Value == 1)
             {
-                toPredictObject = true;
-                toPredictTrackBar.BackColor = Color.Green;
-                this.isPredictingLabel.Text = "Predicting...";
 
             }
 
@@ -267,15 +263,17 @@ namespace Tutorial_31___AR_Drone
         void _camera_OnNewFrame()
         {
 
-            //original//
+            //original image//
             Image<Bgr, byte> originalImage = new Image<Bgr, byte>(_camera.GetCurrentBitmap);
 
             //----------------------------------------
+            //convert image to HSV
             Mat HsvImage = new Mat();
             CvInvoke.CvtColor(originalImage, HsvImage, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
             //----------------------------------------
 
             //----------------------------------------
+            //apply the threshold values to the image in hope of isolating a specific colour
             Mat thresholdImage = new Mat();
             CvInvoke.InRange(HsvImage, new ScalarArray(new MCvScalar(iLowH, iLowS, iLowV)), new ScalarArray(new MCvScalar(iHighH, iHighS, iHighV)), thresholdImage);
             //----------------------------------------
@@ -285,18 +283,18 @@ namespace Tutorial_31___AR_Drone
             Point myPoint = new Point();
             myPoint.X = -1;
             myPoint.Y = -1;
-
+            //filter for noise by using erode and dilation techniques
             Mat erodeAndDilateEllipse = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Ellipse, mySize, myPoint);
             Emgu.CV.Structure.MCvScalar erodeAndDilateScalar = new Emgu.CV.Structure.MCvScalar();
             CvInvoke.Erode(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
             //CvInvoke.Erode(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
-
             CvInvoke.Dilate(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
             //CvInvoke.Dilate(thresholdImage, thresholdImage, erodeAndDilateEllipse, myPoint, 1, Emgu.CV.CvEnum.BorderType.Constant, erodeAndDilateScalar);
             //----------------------------------------
 
 
             //----------------------------------------
+            //find the moments of the object according to the remaining white pixels
             CvInvoke.Moments(thresholdImage);
             double m10 = CvInvoke.Moments(thresholdImage).M10;
             double m01 = CvInvoke.Moments(thresholdImage).M01;
@@ -382,12 +380,10 @@ namespace Tutorial_31___AR_Drone
             //derivative
             slopePitchX = errorPitchX - lastErrorPitchX;
             dPitchCorrectionX = dPitchGain * slopePitchX;
-
             lastErrorPitchX = errorPitchX;
 
             float pitchCorrection = (pPitchCorrectionX + iPitchCorrectionX + dPitchCorrectionX);
             //scale the value to fit within the wanted moveSensitivity
-            Console.WriteLine("Frame " + frame++ + " " + pitchCorrection);
             pitchCorrection /= 1000.0f;
 
             if (pitchCorrection > maxPitchCorrectionX)
@@ -403,7 +399,7 @@ namespace Tutorial_31___AR_Drone
             ///////////
 
             //////////
-            //toRoll//
+            //toYaw//
             //////////
             //proportional
             errorYaw = xAndYPoints.X - setPointYaw;
@@ -445,7 +441,7 @@ namespace Tutorial_31___AR_Drone
                 rollCorrection = minYawCorrection;                           
             }
             //////////
-            //toRoll//
+            //toYaw//
             //////////
 
             //////////////////
@@ -493,11 +489,12 @@ namespace Tutorial_31___AR_Drone
 
             //initiate moves//
             ezB_Connect1.EZB.ARDrone.SetProgressiveInputValues(0, -(pitchCorrection), -(adCorrection), (rollCorrection));
-            Console.WriteLine("Iteration " + frame + " " + "pitch: " + pitchCorrection + " " + "adCorrection" + adCorrection + " " + "rollCorrection" + rollCorrection);
             System.Threading.Thread.Sleep(moveSleepTime);
-
             ezB_Connect1.EZB.ARDrone.Hover();
             //initiate moves//
+
+            Console.WriteLine("Iteration " + frame + " " + "pitch: " + pitchCorrection + " " + "adCorrection" + adCorrection + " " + "rollCorrection" + rollCorrection);
+
         }
 
         private void setDefaultThresholdValues()
